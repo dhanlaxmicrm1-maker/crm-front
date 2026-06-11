@@ -15,9 +15,6 @@ import VehicleInsurance from "./pages/VehicleInsurance";
 import InsuranceClients from "./pages/InsuranceClients";
 import MutualFundClients from "./pages/MutualFundClients";
 
-import ClientDetails from "./pages/ClientDetails";
-import ConvertLead from "./pages/ConvertLead";
-
 import Tasks from "./pages/Tasks";
 import Analytics from "./pages/Analytics";
 import Notifications from "./pages/Notifications";
@@ -39,7 +36,6 @@ function App() {
 
               <Route path="/leads" element={<Leads />} />
               <Route path="/add-lead" element={<AddLead />} />
-              <Route path="/convert-lead/:id" element={<ConvertLead />} />
 
               <Route path="/all-clients" element={<AllClients />} />
               <Route path="/add-client" element={<AddClient />} />
@@ -59,10 +55,6 @@ function App() {
                 element={<MutualFundClients />}
               />
 
-              <Route
-                path="/client/:id"
-                element={<ClientDetails />}
-              />
 
               <Route path="/tasks" element={<Tasks />} />
               <Route path="/analytics" element={<Analytics />} />
