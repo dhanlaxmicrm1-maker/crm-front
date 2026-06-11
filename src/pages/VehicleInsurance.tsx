@@ -1,48 +1,45 @@
-import { vehiclePolicies } from "../data/vehiclePolicies";
 import { Search, Download, Plus } from "lucide-react";
 
 export default function VehicleInsurance() {
   return (
-    <div className="p-6 bg-slate-50 min-h-screen">
+    <div className="p-4 bg-slate-50 min-h-screen">
 
-      <div className="mb-6">
-        <h1 className="text-4xl font-bold text-slate-900">
+      <div className="mb-4">
+        <h1 className="text-3xl font-bold text-slate-900">
           Vehicle Insurance
         </h1>
 
-        <p className="text-slate-500 mt-2">
+        <p className="text-xs text-slate-500">
           Vehicle policies and renewals
         </p>
       </div>
 
-      <div className="bg-white rounded-3xl shadow-sm p-5">
+      <div className="bg-white rounded-xl shadow-sm p-4">
 
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-4">
 
-          <div className="relative w-[420px]">
-
+          <div className="relative w-[320px]">
             <Search
-              size={18}
-              className="absolute left-3 top-3.5 text-slate-400"
+              size={14}
+              className="absolute left-3 top-2.5 text-slate-400"
             />
 
             <input
               type="text"
-              placeholder="Search vehicle policy..."
-              className="w-full bg-slate-50 rounded-xl pl-10 py-3 outline-none"
+              placeholder="Search vehicle..."
+              className="w-full bg-slate-50 rounded-lg pl-9 py-2 text-sm outline-none"
             />
-
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex gap-2">
 
-            <button className="bg-slate-100 hover:bg-slate-200 px-4 py-2 rounded-xl flex items-center gap-2 transition">
-              <Download size={16} />
+            <button className="bg-slate-100 px-3 py-2 rounded-lg flex items-center gap-2 text-sm">
+              <Download size={14} />
               Export
             </button>
 
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl flex items-center gap-2 transition">
-              <Plus size={16} />
+            <button className="bg-blue-600 text-white px-3 py-2 rounded-lg flex items-center gap-2 text-sm">
+              <Plus size={14} />
               Add Policy
             </button>
 
@@ -52,29 +49,49 @@ export default function VehicleInsurance() {
 
         <div className="overflow-x-auto">
 
-          <table className="w-full">
+          <table className="w-full border border-slate-200 text-xs">
 
             <thead>
-              <tr className="bg-slate-50 text-slate-600">
+              <tr className="bg-slate-100">
 
-                <th className="p-4 text-left font-medium">
-                  Owner
+                <th className="border p-2 text-left">
+                  Customer Name
                 </th>
 
-                <th className="p-4 text-left font-medium">
-                  Vehicle Number
-                </th>
-
-                <th className="p-4 text-left font-medium">
+                <th className="border p-2 text-left">
                   Vehicle Type
                 </th>
 
-                <th className="p-4 text-left font-medium">
+                <th className="border p-2 text-left">
+                  Vehicle Number
+                </th>
+
+                <th className="border p-2 text-left">
+                  Mobile Number
+                </th>
+
+                <th className="border p-2 text-left">
                   Premium
                 </th>
 
-                <th className="p-4 text-left font-medium">
-                  Renewal Date
+                <th className="border p-2 text-left">
+                  Offer Price
+                </th>
+
+                <th className="border p-2 text-left">
+                  Discount
+                </th>
+
+                <th className="border p-2 text-left">
+                  Cost
+                </th>
+
+                <th className="border p-2 text-left">
+                  Insurer
+                </th>
+
+                <th className="border p-2 text-left">
+                  Agent Company
                 </th>
 
               </tr>
@@ -82,36 +99,49 @@ export default function VehicleInsurance() {
 
             <tbody>
 
-              {vehiclePolicies.map((policy) => (
+              <tr>
 
-                <tr
-                  key={policy.id}
-                  className="hover:bg-slate-50 transition"
-                >
+                <td className="border p-2">
+                  Rahul Sharma
+                </td>
 
-                  <td className="p-4 font-medium">
-                    {policy.owner}
-                  </td>
+                <td className="border p-2">
+                  Car
+                </td>
 
-                  <td className="p-4">
-                    {policy.vehicleNumber}
-                  </td>
+                <td className="border p-2">
+                  GJ10AB1234
+                </td>
 
-                  <td className="p-4">
-                    {policy.vehicleType}
-                  </td>
+                <td className="border p-2">
+                  9876543210
+                </td>
 
-                  <td className="p-4">
-                    ₹{policy.premium.toLocaleString()}
-                  </td>
+                <td className="border p-2">
+                  ₹18,000
+                </td>
 
-                  <td className="p-4">
-                    {policy.renewalDate}
-                  </td>
+                <td className="border p-2">
+                  ₹17,500
+                </td>
 
-                </tr>
+                <td className="border p-2">
+                  ₹500
+                </td>
 
-              ))}
+                <td className="border p-2">
+                  ₹16,000
+                </td>
+
+                <td className="border p-2">
+                  ICICI Lombard
+                </td>
+
+                <td className="border p-2">
+                  ABC Insurance
+                </td>
+
+              </tr>
 
             </tbody>
 
