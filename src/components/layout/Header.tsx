@@ -8,7 +8,7 @@ export default function Header() {
         top-0
         left-72
         right-0
-        h-16
+        h-[72px]
         bg-white
         border-b
         border-slate-200
