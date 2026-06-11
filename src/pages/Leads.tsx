@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { Search, Download, UserPlus } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Leads() {
   const [leads, setLeads] = useState<any[]>([]);
@@ -22,6 +23,7 @@ export default function Leads() {
 
   return (
     <div className="p-4 bg-slate-50 min-h-screen">
+
       <div className="mb-6">
         <h1 className="text-4xl font-semibold text-slate-800">
           Leads
@@ -33,22 +35,14 @@ export default function Leads() {
         </p>
       </div>
 
-      <div className="flex justify-end gap-3 mb-5">
-        <button className="flex items-center gap-2 px-4 py-2 bg-white border rounded-xl text-sm">
-          <Download size={16} />
-          Export
-        </button>
-
-        <button className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl text-sm">
-          <UserPlus size={16} />
-          Add Lead
-        </button>
-      </div>
-
       <div className="bg-white rounded-3xl border overflow-hidden">
+
         <div className="p-4 border-b">
+
           <div className="flex gap-3">
+
             <div className="relative flex-1">
+
               <Search
                 size={18}
                 className="absolute left-3 top-3 text-slate-400"
@@ -58,6 +52,7 @@ export default function Leads() {
                 placeholder="Search by name, code, contact..."
                 className="w-full border rounded-xl pl-10 py-2.5"
               />
+
             </div>
 
             <select className="border rounded-xl px-4">
@@ -68,19 +63,29 @@ export default function Leads() {
               <option>All statuses</option>
             </select>
 
-            <a
-  href="/add-lead"
-  className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl text-sm"
->
-  <UserPlus size={16} />
-  Add Lead
-</a>
+            <button className="flex items-center gap-2 px-4 py-2 bg-white border rounded-xl text-sm">
+              <Download size={16} />
+              Export
+            </button>
+
+            <Link
+              to="/add-lead"
+              className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl text-sm"
+            >
+              <UserPlus size={16} />
+              Add Lead
+            </Link>
+
           </div>
+
         </div>
 
         <table className="w-full text-[11px]">
+
           <thead>
+
             <tr className="text-left text-xs text-slate-500 border-b">
+
               <th className="px-3 py-2">Client</th>
               <th className="px-3 py-2">Phone</th>
               <th className="px-3 py-2">Source</th>
@@ -92,27 +97,26 @@ export default function Leads() {
               <th className="px-3 py-2">Account</th>
               <th className="px-3 py-2">Mandate</th>
               <th className="px-3 py-2">SIP</th>
+
             </tr>
+
           </thead>
 
           <tbody>
+
             {leads.map((lead) => (
+
               <tr
                 key={lead._id}
                 className="border-b hover:bg-slate-50"
               >
+
                 <td className="p-4 text-sm">{lead.client}</td>
-
                 <td className="p-4 text-sm">{lead.phone}</td>
-
                 <td className="p-4 text-sm">{lead.source}</td>
-
                 <td className="p-4 text-sm">{lead.code}</td>
-
                 <td className="p-4 text-sm">{lead.referredBy}</td>
-
                 <td className="p-4 text-sm">{lead.task}</td>
-
                 <td className="p-4 text-sm">{lead.processedBy}</td>
 
                 <td className="p-4 text-sm">
@@ -130,15 +134,21 @@ export default function Leads() {
                 <td className="p-4 text-sm">
                   {statusBadge(lead.sip)}
                 </td>
+
               </tr>
+
             ))}
+
           </tbody>
+
         </table>
 
         <div className="p-4 text-sm text-slate-500">
           Showing {leads.length} leads
         </div>
+
       </div>
+
     </div>
   );
 }
