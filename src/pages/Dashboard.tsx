@@ -5,7 +5,6 @@ import {
   CheckCircle,
   CreditCard,
   Landmark,
-  FileText,
 } from "lucide-react";
 
 import DashboardLeadChart from "../components/dashboard/DashboardLeadChart";
