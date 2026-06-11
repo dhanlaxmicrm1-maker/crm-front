@@ -18,15 +18,6 @@ export default function AllClients() {
     }
   };
 
-  const badge = (status: string) => {
-    if (status === "Completed")
-      return "bg-green-100 text-green-700";
-
-    if (status === "In Progress")
-      return "bg-blue-100 text-blue-700";
-
-    return "bg-gray-100 text-gray-600";
-  };
 
   return (
     <div className="px-8 py-6 w-full">
