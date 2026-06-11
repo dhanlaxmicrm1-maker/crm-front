@@ -32,7 +32,7 @@ export default function Sidebar() {
         h-screen
         w-72
         bg-white
-        border-r
+        shadow-sm
         flex
         flex-col
         z-50
@@ -40,10 +40,8 @@ export default function Sidebar() {
     >
       {/* Logo */}
 
-      <div className="p-6 border-b">
-
+      <div className="h-[72px] px-6 flex items-center border-b border-slate-200">
         <div className="flex items-center gap-3">
-
           <div className="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg">
             F
           </div>
@@ -57,38 +55,28 @@ export default function Sidebar() {
               Wealth Management
             </p>
           </div>
-
         </div>
-
       </div>
 
       {/* Menu */}
 
       <div className="flex-1 p-4 overflow-y-auto">
-
         <p className="text-xs uppercase tracking-wider text-gray-400 mb-3 px-2">
           Workspace
         </p>
 
         <div className="space-y-1">
-
           <Link to="/" className={menuClass("/")}>
             <LayoutDashboard size={20} />
             <span>Dashboard</span>
           </Link>
 
-          <Link
-            to="/leads"
-            className={menuClass("/leads")}
-          >
+          <Link to="/leads" className={menuClass("/leads")}>
             <UserPlus size={20} />
             <span>Leads</span>
           </Link>
 
-          <Link
-            to="/all-clients"
-            className={menuClass("/all-clients")}
-          >
+          <Link to="/all-clients" className={menuClass("/all-clients")}>
             <Users size={20} />
             <span>All Clients</span>
           </Link>
@@ -117,22 +105,15 @@ export default function Sidebar() {
             <span>Mutual Funds</span>
           </Link>
 
-          <Link
-            to="/tasks"
-            className={menuClass("/tasks")}
-          >
+          <Link to="/tasks" className={menuClass("/tasks")}>
             <CheckSquare size={20} />
             <span>Tasks</span>
           </Link>
 
-          <Link
-            to="/analytics"
-            className={menuClass("/analytics")}
-          >
+          <Link to="/analytics" className={menuClass("/analytics")}>
             <BarChart3 size={20} />
             <span>Analytics</span>
           </Link>
-
         </div>
 
         <p className="text-xs uppercase tracking-wider text-gray-400 mt-8 mb-3 px-2">
@@ -140,7 +121,6 @@ export default function Sidebar() {
         </p>
 
         <div className="space-y-1">
-
           <Link
             to="/notifications"
             className={menuClass("/notifications")}
@@ -149,24 +129,17 @@ export default function Sidebar() {
             <span>Notifications</span>
           </Link>
 
-          <Link
-            to="/settings"
-            className={menuClass("/settings")}
-          >
+          <Link to="/settings" className={menuClass("/settings")}>
             <Settings size={20} />
             <span>Settings</span>
           </Link>
-
         </div>
-
       </div>
 
       {/* User Card */}
 
-      <div className="p-4 border-t">
-
+      <div className="p-4">
         <div className="bg-slate-50 rounded-xl p-3 flex items-center gap-3">
-
           <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
             R
           </div>
@@ -180,11 +153,8 @@ export default function Sidebar() {
               Senior Advisor
             </p>
           </div>
-
         </div>
-
       </div>
-
     </aside>
   );
 }
