@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
-import { Search, Filter, Download, UserPlus } from "lucide-react";
+import { Search, Download, UserPlus } from "lucide-react";
 
 export default function Leads() {
   const [leads, setLeads] = useState<any[]>([]);
