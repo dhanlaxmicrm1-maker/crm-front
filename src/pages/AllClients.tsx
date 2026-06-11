@@ -18,7 +18,6 @@ export default function AllClients() {
     }
   };
 
-
   return (
     <div className="px-8 py-6 w-full">
       <div className="flex items-start justify-between mb-6">
