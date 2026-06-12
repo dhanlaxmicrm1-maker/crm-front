@@ -1,4 +1,3 @@
-```tsx
 import { Search, Calendar, Pencil, Trash2, Plus } from "lucide-react";
 import { useState } from "react";
 import { tasks as initialTasks, Task } from "../data/tasks";
@@ -49,6 +48,13 @@ export default function Tasks() {
     });
   };
 
+  const columns = [
+    "Pending",
+    "In Progress",
+    "Follow-up",
+    "Completed",
+  ];
+
   const priorityClass = (priority: string) => {
     switch (priority) {
       case "High":
@@ -72,13 +78,6 @@ export default function Tasks() {
         return "bg-slate-100 text-slate-600";
     }
   };
-
-  const columns = [
-    "Pending",
-    "In Progress",
-    "Follow-up",
-    "Completed",
-  ] as const;
 
   return (
     <div className="px-8 py-8">
@@ -188,7 +187,7 @@ export default function Tasks() {
       {/* All Tasks */}
       <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
         <div className="px-5 py-4 border-b border-slate-200">
-          <h3 className="font-semibold">All Tasks</h3>
+          <h3 className="font-semibold">All tasks</h3>
         </div>
 
         {taskList.map((task) => (
@@ -352,4 +351,3 @@ export default function Tasks() {
     </div>
   );
 }
-```
