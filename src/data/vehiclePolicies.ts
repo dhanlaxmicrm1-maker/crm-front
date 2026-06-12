@@ -1,51 +1,29 @@
 export interface VehiclePolicy {
   id: number;
-  owner: string;
-  vehicleNumber: string;
+  customerName: string;
   vehicleType: string;
+  vehicleNumber: string;
+  mobileNumber: string;
   premium: number;
-  renewalDate: string;
+  offerPrice: number;
+  discount: number;
+  cost: number;
+  insurer: string;
+  agentCompany: string;
 }
 
 export const vehiclePolicies: VehiclePolicy[] = [
   {
     id: 1,
-    owner: "Aarav Sharma",
-    vehicleNumber: "MH11AB1037",
-    vehicleType: "Four Wheeler",
-    premium: 8650,
-    renewalDate: "2026-06-16",
-  },
-  {
-    id: 2,
-    owner: "Vivaan Patel",
-    vehicleNumber: "MH12CD1074",
-    vehicleType: "Four Wheeler",
-    premium: 9300,
-    renewalDate: "2026-06-27",
-  },
-  {
-    id: 3,
-    owner: "Aditya Reddy",
-    vehicleNumber: "MH13EF1111",
-    vehicleType: "Two Wheeler",
-    premium: 9950,
-    renewalDate: "2026-07-08",
-  },
-  {
-    id: 4,
-    owner: "Vihaan Gupta",
-    vehicleNumber: "MH14GH1148",
-    vehicleType: "Four Wheeler",
-    premium: 10600,
-    renewalDate: "2026-07-19",
-  },
-  {
-    id: 5,
-    owner: "Raj Patel",
-    vehicleNumber: "GJ01AA9999",
-    vehicleType: "Four Wheeler",
-    premium: 12500,
-    renewalDate: "2026-08-11",
+    customerName: "Rahul Sharma",
+    vehicleType: "Car",
+    vehicleNumber: "GJ10AB1234",
+    mobileNumber: "9876543210",
+    premium: 18000,
+    offerPrice: 17500,
+    discount: 500,
+    cost: 16000,
+    insurer: "ICICI Lombard",
+    agentCompany: "ABC Insurance",
   },
 ];
