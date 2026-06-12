@@ -2,8 +2,9 @@ import { Search, Calendar, Pencil, Trash2, Plus } from "lucide-react";
 import { useState } from "react";
 import { tasks as initialTasks } from "../data/tasks";
 
-export default function Tasks() {
-  const [taskList, setTaskList] = useState(initialTasks);
+export default function Tasks() {import { tasks as initialTasks, Task } from "../data/tasks";
+
+const [taskList, setTaskList] = useState<Task[]>(initialTasks);
 
 const [showModal, setShowModal] = useState(false);
 const [newTask, setNewTask] = useState<{
@@ -239,11 +240,11 @@ const addTask = () => {
       {showModal && (
   <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
 
-    <div className="bg-white p-6 rounded-2xl w-[650px]">
+<h2 className="text-xl font-bold mb-4">
+  Add Task
+</h2>
 
-      <h2 className="text-xl font-bold mb-4">
-        Add Task
-      </h2>
+    
 
       <div className="grid grid-cols-2 gap-3">
 
@@ -259,17 +260,17 @@ const addTask = () => {
           className="border p-3 rounded-xl"
         />
 
-        <input
-          placeholder="Client"
-          value={newTask.client}
-          onChange={(e) =>
-            setNewTask({
-              ...newTask,
-              client: e.target.value,
-            })
-          }
-          className="border p-3 rounded-xl"
-        />
+       <input
+  placeholder="Client"
+  value={newTask.client}
+  onChange={(e) =>
+    setNewTask({
+      ...newTask,
+      client: e.target.value,
+    })
+  }
+  className="border p-3 rounded-xl"
+/>
 
         <input
           placeholder="Employee"
@@ -295,37 +296,39 @@ const addTask = () => {
           className="border p-3 rounded-xl"
         />
 
-        <select
-          value={newTask.priority}
-          onChange={(e) =>
-            setNewTask({
-              ...newTask,
-              priority: e.target.value,
-            })
-          }
-          className="border p-3 rounded-xl"
-        >
-          <option>Low</option>
-          <option>Medium</option>
-          <option>High</option>
-        </select>
-
-        <select
-          value={newTask.status}
-          onChange={(e) =>
-            setNewTask({
-              ...newTask,
-              status: e.target.value,
-            })
-          }
-          className="border p-3 rounded-xl"
-        >
-          <option>Pending</option>
-          <option>In Progress</option>
-          <option>Follow-up</option>
-          <option>Completed</option>
-        </select>
-
+      <select
+  value={newTask.priority}
+  onChange={(e) =>
+    setNewTask({
+      ...newTask,
+      priority: e.target.value as "Low" | "Medium" | "High",
+    })
+  }
+  className="border p-3 rounded-xl"
+>
+  <option value="Low">Low</option>
+  <option value="Medium">Medium</option>
+  <option value="High">High</option>
+</select>
+       <select
+  value={newTask.status}
+  onChange={(e) =>
+    setNewTask({
+      ...newTask,
+      status: e.target.value as
+        | "Pending"
+        | "In Progress"
+        | "Follow-up"
+        | "Completed",
+    })
+  }
+  className="border p-3 rounded-xl"
+>
+  <option value="Pending">Pending</option>
+  <option value="In Progress">In Progress</option>
+  <option value="Follow-up">Follow-up</option>
+  <option value="Completed">Completed</option>
+</select>
       </div>
 
       <div className="flex gap-3 mt-5">
