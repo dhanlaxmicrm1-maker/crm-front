@@ -6,8 +6,14 @@ export default function Tasks() {
   const [taskList, setTaskList] = useState(initialTasks);
 
 const [showModal, setShowModal] = useState(false);
-
-const [newTask, setNewTask] = useState({
+const [newTask, setNewTask] = useState<{
+  title: string;
+  client: string;
+  employee: string;
+  dueDate: string;
+  priority: "Low" | "Medium" | "High";
+  status: "Pending" | "In Progress" | "Follow-up" | "Completed";
+}>({
   title: "",
   client: "",
   employee: "",
