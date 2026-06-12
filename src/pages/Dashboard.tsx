@@ -121,28 +121,29 @@ export default function Dashboard() {
           </h2>
 
          <div className="h-[280px]">
-  <ResponsiveContainer width="100%" height="100%">
-    <PieChart>
-      <Pie
-        data={serviceData}
-        dataKey="value"
-        nameKey="name"
-        cx="50%"
-        cy="50%"
-        innerRadius={60}
-        outerRadius={90}
-      >
-        {serviceData.map((_, index) => (
-          <Cell
-            key={index}
-            fill={COLORS[index]}
-          />
-        ))}
-      </Pie>
+<ResponsiveContainer width="100%" height={220}>
+  <PieChart>
+    <Pie
+      data={serviceData}
+      dataKey="value"
+      nameKey="name"
+      cx="50%"
+      cy="38%"
+      innerRadius={45}
+      outerRadius={70}
+      paddingAngle={1}
+    >
+      {serviceData.map((_, index) => (
+        <Cell
+          key={index}
+          fill={COLORS[index]}
+        />
+      ))}
+    </Pie>
 
-      <Tooltip />
-    </PieChart>
-  </ResponsiveContainer>
+    <Tooltip />
+  </PieChart>
+</ResponsiveContainer>
 
   <div className="flex justify-center gap-4 mt-2 text-sm">
     <span className="text-blue-600">
