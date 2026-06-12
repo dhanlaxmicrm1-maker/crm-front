@@ -1,6 +1,57 @@
+import { useState } from "react";
 import { Search, Download, Plus } from "lucide-react";
+import { vehiclePolicies } from "../data/vehiclePolicies";
 
 export default function VehicleInsurance() {
+  const [policies, setPolicies] = useState(vehiclePolicies);
+
+const [showModal, setShowModal] = useState(false);
+
+const [newPolicy, setNewPolicy] = useState({
+  customerName: "",
+  vehicleType: "",
+  vehicleNumber: "",
+  mobileNumber: "",
+  premium: "",
+  offerPrice: "",
+  discount: "",
+  cost: "",
+  insurer: "",
+  agentCompany: "",
+});
+  const addPolicy = () => {
+  setPolicies([
+    ...policies,
+    {
+      id: policies.length + 1,
+      customerName: newPolicy.customerName,
+      vehicleType: newPolicy.vehicleType,
+      vehicleNumber: newPolicy.vehicleNumber,
+      mobileNumber: newPolicy.mobileNumber,
+      premium: Number(newPolicy.premium),
+      offerPrice: Number(newPolicy.offerPrice),
+      discount: Number(newPolicy.discount),
+      cost: Number(newPolicy.cost),
+      insurer: newPolicy.insurer,
+      agentCompany: newPolicy.agentCompany,
+    },
+  ]);
+
+  setShowModal(false);
+
+  setNewPolicy({
+    customerName: "",
+    vehicleType: "",
+    vehicleNumber: "",
+    mobileNumber: "",
+    premium: "",
+    offerPrice: "",
+    discount: "",
+    cost: "",
+    insurer: "",
+    agentCompany: "",
+  });
+};
   return (
     <div className="p-4 bg-slate-50 min-h-screen">
 
@@ -37,11 +88,13 @@ export default function VehicleInsurance() {
               <Download size={14} />
               Export
             </button>
-
-            <button className="bg-blue-600 text-white px-3 py-2 rounded-lg flex items-center gap-2 text-sm">
-              <Plus size={14} />
-              Add Policy
-            </button>
+            <button
+  onClick={() => setShowModal(true)}
+  className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm"
+>
+  <Plus size={14} />
+  Add Policy
+</button>
 
           </div>
 
@@ -97,60 +150,213 @@ export default function VehicleInsurance() {
               </tr>
             </thead>
 
-            <tbody>
+           <tbody>
+  {policies.map((policy) => (
+    <tr key={policy.id}>
 
-              <tr>
+      <td className="border p-2">
+        {policy.customerName}
+      </td>
 
-                <td className="border p-2">
-                  Rahul Sharma
-                </td>
+      <td className="border p-2">
+        {policy.vehicleType}
+      </td>
 
-                <td className="border p-2">
-                  Car
-                </td>
+      <td className="border p-2">
+        {policy.vehicleNumber}
+      </td>
 
-                <td className="border p-2">
-                  GJ10AB1234
-                </td>
+      <td className="border p-2">
+        {policy.mobileNumber}
+      </td>
 
-                <td className="border p-2">
-                  9876543210
-                </td>
+      <td className="border p-2">
+        ₹{policy.premium.toLocaleString()}
+      </td>
 
-                <td className="border p-2">
-                  ₹18,000
-                </td>
+      <td className="border p-2">
+        ₹{policy.offerPrice.toLocaleString()}
+      </td>
 
-                <td className="border p-2">
-                  ₹17,500
-                </td>
+      <td className="border p-2">
+        ₹{policy.discount.toLocaleString()}
+      </td>
 
-                <td className="border p-2">
-                  ₹500
-                </td>
+      <td className="border p-2">
+        ₹{policy.cost.toLocaleString()}
+      </td>
 
-                <td className="border p-2">
-                  ₹16,000
-                </td>
+      <td className="border p-2">
+        {policy.insurer}
+      </td>
 
-                <td className="border p-2">
-                  ICICI Lombard
-                </td>
+      <td className="border p-2">
+        {policy.agentCompany}
+      </td>
 
-                <td className="border p-2">
-                  ABC Insurance
-                </td>
-
-              </tr>
-
-            </tbody>
-
+    </tr>
+  ))}
+</tbody>
           </table>
 
         </div>
 
       </div>
+{showModal && (
+  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
 
+    <div className="bg-white p-6 rounded-2xl w-[650px]">
+
+      <h2 className="text-xl font-bold mb-4">
+        Add Vehicle Policy
+      </h2>
+
+      <div className="grid grid-cols-2 gap-3">
+
+        <input
+          placeholder="Customer Name"
+          value={newPolicy.customerName}
+          onChange={(e) =>
+            setNewPolicy({
+              ...newPolicy,
+              customerName: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          placeholder="Vehicle Type"
+          value={newPolicy.vehicleType}
+          onChange={(e) =>
+            setNewPolicy({
+              ...newPolicy,
+              vehicleType: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          placeholder="Vehicle Number"
+          value={newPolicy.vehicleNumber}
+          onChange={(e) =>
+            setNewPolicy({
+              ...newPolicy,
+              vehicleNumber: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          placeholder="Mobile Number"
+          value={newPolicy.mobileNumber}
+          onChange={(e) =>
+            setNewPolicy({
+              ...newPolicy,
+              mobileNumber: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          placeholder="Premium"
+          value={newPolicy.premium}
+          onChange={(e) =>
+            setNewPolicy({
+              ...newPolicy,
+              premium: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          placeholder="Offer Price"
+          value={newPolicy.offerPrice}
+          onChange={(e) =>
+            setNewPolicy({
+              ...newPolicy,
+              offerPrice: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          placeholder="Discount"
+          value={newPolicy.discount}
+          onChange={(e) =>
+            setNewPolicy({
+              ...newPolicy,
+              discount: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          placeholder="Cost"
+          value={newPolicy.cost}
+          onChange={(e) =>
+            setNewPolicy({
+              ...newPolicy,
+              cost: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          placeholder="Insurer"
+          value={newPolicy.insurer}
+          onChange={(e) =>
+            setNewPolicy({
+              ...newPolicy,
+              insurer: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          placeholder="Agent Company"
+          value={newPolicy.agentCompany}
+          onChange={(e) =>
+            setNewPolicy({
+              ...newPolicy,
+              agentCompany: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+      </div>
+
+      <div className="flex gap-3 mt-5">
+
+        <button
+          onClick={addPolicy}
+          className="bg-blue-600 text-white px-5 py-2 rounded-xl"
+        >
+          Save
+        </button>
+
+        <button
+          onClick={() => setShowModal(false)}
+          className="border px-5 py-2 rounded-xl"
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+)}
     </div>
   );
 }
