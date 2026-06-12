@@ -1,6 +1,7 @@
 import { Search, Calendar, Pencil, Trash2, Plus } from "lucide-react";
 import { useState } from "react";
-import { tasks as initialTasks, Task } from "../data/tasks";
+import { tasks as initialTasks } from "../data/tasks";
+import type { Task } from "../data/tasks";
 
 export default function Tasks() {
   const [taskList, setTaskList] = useState<Task[]>(initialTasks);
