@@ -1,16 +1,57 @@
+import { useState } from "react";
 import { mutualFundClients } from "../data/mutualFundClients";
 import { Search, Download, Plus } from "lucide-react";
 
 export default function MutualFundClients() {
-  const totalAUM = mutualFundClients.reduce(
+
+  const [investors, setInvestors] = useState(mutualFundClients);
+
+  const [showModal, setShowModal] = useState(false);
+
+  const [newInvestor, setNewInvestor] = useState({
+    customerName: "",
+    mobile: "",
+    folioNo: "",
+    amc: "",
+    investment: "",
+    sipAmount: "",
+  });
+
+  const addInvestor = () => {
+    setInvestors([
+      ...investors,
+      {
+        id: investors.length + 1,
+        customerName: newInvestor.customerName,
+        mobile: newInvestor.mobile,
+        folioNo: newInvestor.folioNo,
+        amc: newInvestor.amc,
+        investment: Number(newInvestor.investment),
+        sipAmount: Number(newInvestor.sipAmount),
+      },
+    ]);
+
+    setShowModal(false);
+
+    setNewInvestor({
+      customerName: "",
+      mobile: "",
+      folioNo: "",
+      amc: "",
+      investment: "",
+      sipAmount: "",
+    });
+  };
+
+  const totalAUM = investors.reduce(
     (sum, client) => sum + client.investment,
     0
   );
 
-  const totalSIP = mutualFundClients.reduce(
-    (sum, client) => sum + client.sipAmount,
-    0
-  );
+const totalSIP = investors.reduce(
+  (sum, client) => sum + client.sipAmount,
+  0
+);
 
   return (
     <div className="p-6 bg-slate-50 min-h-screen">
@@ -33,7 +74,7 @@ export default function MutualFundClients() {
           </p>
 
           <h2 className="text-3xl font-bold mt-2">
-            {mutualFundClients.length}
+            {investors.length}
           </h2>
         </div>
 
@@ -63,7 +104,7 @@ export default function MutualFundClients() {
           </p>
 
           <h2 className="text-3xl font-bold mt-2">
-            {mutualFundClients.length}
+            {investors.length}
           </h2>
         </div>
 
@@ -95,11 +136,13 @@ export default function MutualFundClients() {
               Export
             </button>
 
-            <button className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-4 py-2 flex items-center gap-2 transition">
-              <Plus size={16} />
-              Add Investor
-            </button>
-
+            <button
+  onClick={() => setShowModal(true)}
+  className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-4 py-2 flex items-center gap-2 transition"
+>
+  <Plus size={16} />
+  Add Investor
+</button>
           </div>
 
         </div>
@@ -125,7 +168,7 @@ export default function MutualFundClients() {
 
             <tbody>
 
-              {mutualFundClients.map((client) => (
+              {investors.map((client) => (
 
                 <tr
                   key={client.id}
@@ -167,7 +210,114 @@ export default function MutualFundClients() {
         </div>
 
       </div>
+{showModal && (
+  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
 
+    <div className="bg-white p-6 rounded-2xl w-[650px]">
+
+      <h2 className="text-xl font-bold mb-4">
+        Add Investor
+      </h2>
+
+      <div className="grid grid-cols-2 gap-3">
+
+        <input
+          placeholder="Investor Name"
+          value={newInvestor.customerName}
+          onChange={(e) =>
+            setNewInvestor({
+              ...newInvestor,
+              customerName: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          placeholder="Mobile"
+          value={newInvestor.mobile}
+          onChange={(e) =>
+            setNewInvestor({
+              ...newInvestor,
+              mobile: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          placeholder="Folio No"
+          value={newInvestor.folioNo}
+          onChange={(e) =>
+            setNewInvestor({
+              ...newInvestor,
+              folioNo: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          placeholder="AMC"
+          value={newInvestor.amc}
+          onChange={(e) =>
+            setNewInvestor({
+              ...newInvestor,
+              amc: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          placeholder="Investment"
+          value={newInvestor.investment}
+          onChange={(e) =>
+            setNewInvestor({
+              ...newInvestor,
+              investment: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          placeholder="Monthly SIP"
+          value={newInvestor.sipAmount}
+          onChange={(e) =>
+            setNewInvestor({
+              ...newInvestor,
+              sipAmount: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+      </div>
+
+      <div className="flex gap-3 mt-5">
+
+        <button
+          onClick={addInvestor}
+          className="bg-blue-600 text-white px-5 py-2 rounded-xl"
+        >
+          Save
+        </button>
+
+        <button
+          onClick={() => setShowModal(false)}
+          className="border px-5 py-2 rounded-xl"
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+)}
     </div>
   );
 }
+      
