@@ -1,7 +1,46 @@
 import { Search, Calendar, Pencil, Trash2, Plus } from "lucide-react";
-import { tasks } from "../data/tasks";
+import { useState } from "react";
+import { tasks as initialTasks } from "../data/tasks";
 
 export default function Tasks() {
+  const [taskList, setTaskList] = useState(initialTasks);
+
+const [showModal, setShowModal] = useState(false);
+
+const [newTask, setNewTask] = useState({
+  title: "",
+  client: "",
+  employee: "",
+  dueDate: "",
+  priority: "Medium",
+  status: "Pending",
+});
+
+const addTask = () => {
+  setTaskList([
+    ...taskList,
+    {
+      id: taskList.length + 1,
+      title: newTask.title,
+      client: newTask.client,
+      employee: newTask.employee,
+      dueDate: newTask.dueDate,
+      priority: newTask.priority,
+      status: newTask.status,
+    },
+  ]);
+
+  setShowModal(false);
+
+  setNewTask({
+    title: "",
+    client: "",
+    employee: "",
+    dueDate: "",
+    priority: "Medium",
+    status: "Pending",
+  });
+};
   const columns = [
     "Pending",
     "In Progress",
@@ -47,11 +86,14 @@ export default function Tasks() {
             Internal work board. Track who's doing what and what's due next.
           </p>
         </div>
-
-        <button className="bg-[#1f365c] hover:bg-[#172a47] text-white px-5 py-2.5 rounded-xl flex items-center gap-2 text-sm font-medium">
-          <Plus size={16} />
-          New Task
-        </button>
+        
+<button
+  onClick={() => setShowModal(true)}
+  className="bg-[#1f365c] hover:bg-[#172a47] text-white px-5 py-2.5 rounded-xl flex items-center gap-2 text-sm font-medium"
+>
+  <Plus size={16} />
+  New Task
+</button>
       </div>
 
       <div className="border-b border-slate-200 mb-6" />
@@ -74,7 +116,7 @@ export default function Tasks() {
 
       <div className="grid grid-cols-4 gap-4 mb-5">
         {columns.map((column) => {
-          const columnTasks = tasks.filter(
+          const columnTasks = taskList.filter(
             (task) => task.status === column
           );
 
@@ -145,7 +187,7 @@ export default function Tasks() {
           <h3 className="font-semibold">All tasks</h3>
         </div>
 
-        {tasks.map((task) => (
+        {taskList.map((task) => (
           <div
             key={task.id}
             className="flex items-center justify-between px-5 py-4 border-b border-slate-100 hover:bg-slate-50"
@@ -188,6 +230,120 @@ export default function Tasks() {
           </div>
         ))}
       </div>
+      {showModal && (
+  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+
+    <div className="bg-white p-6 rounded-2xl w-[650px]">
+
+      <h2 className="text-xl font-bold mb-4">
+        Add Task
+      </h2>
+
+      <div className="grid grid-cols-2 gap-3">
+
+        <input
+          placeholder="Task Title"
+          value={newTask.title}
+          onChange={(e) =>
+            setNewTask({
+              ...newTask,
+              title: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          placeholder="Client"
+          value={newTask.client}
+          onChange={(e) =>
+            setNewTask({
+              ...newTask,
+              client: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          placeholder="Employee"
+          value={newTask.employee}
+          onChange={(e) =>
+            setNewTask({
+              ...newTask,
+              employee: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <input
+          type="date"
+          value={newTask.dueDate}
+          onChange={(e) =>
+            setNewTask({
+              ...newTask,
+              dueDate: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        />
+
+        <select
+          value={newTask.priority}
+          onChange={(e) =>
+            setNewTask({
+              ...newTask,
+              priority: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        >
+          <option>Low</option>
+          <option>Medium</option>
+          <option>High</option>
+        </select>
+
+        <select
+          value={newTask.status}
+          onChange={(e) =>
+            setNewTask({
+              ...newTask,
+              status: e.target.value,
+            })
+          }
+          className="border p-3 rounded-xl"
+        >
+          <option>Pending</option>
+          <option>In Progress</option>
+          <option>Follow-up</option>
+          <option>Completed</option>
+        </select>
+
+      </div>
+
+      <div className="flex gap-3 mt-5">
+
+        <button
+          onClick={addTask}
+          className="bg-blue-600 text-white px-5 py-2 rounded-xl"
+        >
+          Save
+        </button>
+
+        <button
+          onClick={() => setShowModal(false)}
+          className="border px-5 py-2 rounded-xl"
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+)}
     </div>
   );
 }
