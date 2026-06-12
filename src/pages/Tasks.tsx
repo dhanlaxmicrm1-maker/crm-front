@@ -1,8 +1,9 @@
 import { Search, Calendar, Pencil, Trash2, Plus } from "lucide-react";
 import { useState } from "react";
 import { tasks as initialTasks } from "../data/tasks";
+{import { tasks as initialTasks, Task } from "../data/tasks";
 
-export default function Tasks() {import { tasks as initialTasks, Task } from "../data/tasks";
+export default function Tasks() 
 
 const [taskList, setTaskList] = useState<Task[]>(initialTasks);
 
@@ -239,11 +240,11 @@ const addTask = () => {
       </div>
       {showModal && (
   <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div className="bg-white p-6 rounded-2xl w-[650px]">
 
-<h2 className="text-xl font-bold mb-4">
-  Add Task
-</h2>
-
+      <h2 className="text-xl font-bold mb-4">
+        Add Task
+      </h2>
     
 
       <div className="grid grid-cols-2 gap-3">
