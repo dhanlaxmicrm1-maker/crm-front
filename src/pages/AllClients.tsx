@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { Search, Download, Filter } from "lucide-react";
@@ -37,9 +38,12 @@ export default function AllClients() {
             Export
           </button>
 
-          <button className="bg-slate-900 text-white px-4 py-2 rounded-xl">
-            Add Client
-          </button>
+          <Link
+  to="/add-client"
+  className="bg-slate-900 text-white px-4 py-2 rounded-xl"
+>
+  Add Client
+</Link>
         </div>
       </div>
 
