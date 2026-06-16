@@ -10,20 +10,19 @@ export default function AddClient() {
     pan: "",
   });
 
-  const submit = async () => {
-  alert("BUTTON WORKING");
-
+ const submit = async () => {
   try {
-      await api.post("/clients", form);
+    await api.post("/clients", form);
 
-      alert("Client Added Successfully");
+    alert("Client Added Successfully");
 
-      window.location.href = "/all-clients";
-    } catch (err) {
-      console.log(err);
-      alert("Error Adding Client");
-    }
-  };
+    navigate("/all-clients");
+  } catch (err) {
+    console.log(err);
+
+    alert("Error Adding Client");
+  }
+};
 
   return (
     <div className="p-6 bg-slate-50 min-h-screen">
