@@ -1,7 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import api from "../services/api";
 
 export default function AddClient() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -10,19 +14,19 @@ export default function AddClient() {
     pan: "",
   });
 
- const submit = async () => {
-  try {
-    await api.post("/clients", form);
+  const submit = async () => {
+    try {
+      await api.post("/clients", form);
 
-    alert("Client Added Successfully");
+      alert("Client Added Successfully");
 
-    navigate("/all-clients");
-  } catch (err) {
-    console.log(err);
+      navigate("/all-clients");
+    } catch (err) {
+      console.log(err);
 
-    alert("Error Adding Client");
-  }
-};
+      alert("Error Adding Client");
+    }
+  };
 
   return (
     <div className="p-6 bg-slate-50 min-h-screen">
@@ -35,7 +39,9 @@ export default function AddClient() {
       </p>
 
       <div className="bg-white rounded-2xl p-6 shadow-sm max-w-4xl">
+
         <div className="grid grid-cols-2 gap-4">
+
           <div>
             <label className="text-sm font-medium">
               Client Name
@@ -120,14 +126,16 @@ export default function AddClient() {
               }
             />
           </div>
+
         </div>
 
-       <button
-  onClick={submit}
-  className="mt-6 bg-blue-600 text-white px-5 py-3 rounded-xl"
->
-  Save Client
-</button>
+        <button
+          onClick={submit}
+          className="mt-6 bg-blue-600 text-white px-5 py-3 rounded-xl"
+        >
+          Save Client
+        </button>
+
       </div>
     </div>
   );
