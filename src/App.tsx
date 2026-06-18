@@ -14,6 +14,10 @@ import VehicleInsurance from "./pages/VehicleInsurance";
 import InsuranceClients from "./pages/InsuranceClients";
 import MutualFundClients from "./pages/MutualFundClients";
 
+// ✅ ADD THESE IMPORTS
+import AddInsuranceClient from "./pages/AddInsuranceClient";
+import AddMutualFundClient from "./pages/AddMutualFundClient";
+
 import Tasks from "./pages/Tasks";
 import Analytics from "./pages/Analytics";
 import Notifications from "./pages/Notifications";
@@ -51,9 +55,22 @@ function App() {
                 element={<InsuranceClients />}
               />
 
+              {/* ✅ ADD PAGE FOR INSURANCE CLIENT */}
+              <Route
+                path="/add-insurance-client"
+                element={<AddInsuranceClient />}
+              />
+
+              {/* Mutual Fund */}
               <Route
                 path="/mutualfund-clients"
                 element={<MutualFundClients />}
+              />
+
+              {/* ✅ ADD PAGE FOR MF */}
+              <Route
+                path="/add-mf-client"
+                element={<AddMutualFundClient />}
               />
 
               {/* Other Pages */}
