@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import api from "../services/api";
+import React from "react";
 import {
   ResponsiveContainer,
   LineChart,
@@ -11,12 +10,9 @@ import {
   PieChart,
   Pie,
   Cell,
-  BarChart,
-  Bar,
-  Legend,
 } from "recharts";
 import {
-  UserPlus,
+  Users,
   Shield,
   Car,
   Landmark,
@@ -25,335 +21,322 @@ import {
   Calendar,
   Clock,
 } from "lucide-react";
-
-const PIE_COLORS = ["#2563eb", "#22c55e", "#f59e0b"];
-
-const MOCK_RENEWALS = [
-  { name: "Vivaan Patel",  sub: "Whole Life",            days: 8  },
-  { name: "Vivaan Patel",  sub: "Vehicle MH2CD1074",     days: 9  },
-  { name: "Aditya Reddy",  sub: "Health Floater",        days: 14 },
-  { name: "Aditya Reddy",  sub: "Vehicle MH9EF1111",     days: 20 },
-  { name: "Vihaan Gupta",  sub: "Critical Illness",      days: 23 },
+const revenueData = [
+  { month: "Jan", revenue: 1200000 },
+  { month: "Feb", revenue: 1450000 },
+  { month: "Mar", revenue: 1650000 },
+  { month: "Apr", revenue: 1820000 },
+  { month: "May", revenue: 2100000 },
+  { month: "Jun", revenue: 2804450 },
 ];
 
-const FALLBACK_TARGET = [
-  { month: "Jan", target: 200000,  achievement: 150000  },
-  { month: "Feb", target: 200000,  achievement: 180000  },
-  { month: "Mar", target: 250000,  achievement: 210000  },
-  { month: "Apr", target: 250000,  achievement: 230000  },
-  { month: "May", target: 300000,  achievement: 260000  },
-  { month: "Jun", target: 300000,  achievement: 2800000 },
+const serviceData = [
+  {
+    name: "Insurance",
+    value: 40,
+  },
+  {
+    name: "Vehicle",
+    value: 30,
+  },
+  {
+    name: "Mutual Funds",
+    value: 30,
+  },
+];
+
+const COLORS = [
+  "#2563eb",
+  "#14b8a6",
+  "#f59e0b",
 ];
 
 export default function Dashboard() {
-  const [stats, setStats] = useState<any>({
-    totalLeads: 0,
-    insuranceClients: 0,
-    vehiclePolicies: 0,
-    mutualFundClients: 0,
-    monthlyRevenue: 0,
-    monthlyCommission: 0,
-    upcomingRenewals: 0,
-    followUps: 0,
-    pendingTasks: 0,
-    revenueData: [],
-    serviceData: [],
-    targetData: [],
-  });
-
-  useEffect(() => { fetchDashboard(); }, []);
-
-  const fetchDashboard = async () => {
-    try {
-      const res = await api.get("/dashboard");
-      setStats(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const fmt = (n: number) =>
-    `₹${Number(n).toLocaleString("en-IN")}`;
-
-  const targetData =
-    stats.targetData?.length ? stats.targetData : FALLBACK_TARGET;
-
   return (
-    <div className="p-5 bg-slate-50 min-h-screen">
+    <div className="p-4 bg-slate-50 min-h-screen">
 
-      {/* ── Title ─────────────────────────────── */}
-      <div className="mb-5">
-        <h1 className="text-xl font-bold text-slate-800">
+      <div className="mb-4">
+        <h1 className="text-2xl font-bold text-slate-800">
           Executive Dashboard
         </h1>
-        <p className="text-xs text-slate-500">
+
+        <p className="text-sm text-slate-500">
           Live business analytics across all modules
         </p>
       </div>
 
-      {/* ── KPI Row 1 — 5 cards ───────────────── */}
-      <div className="grid grid-cols-5 gap-3 mb-3">
-        <KpiCard
-          title="Total Leads"
-          value={stats.totalLeads}
-          icon={<UserPlus size={16} />}
-        />
-        <KpiCard
-          title="Insurance Clients"
-          value={stats.insuranceClients}
-          icon={<Shield size={16} />}
-        />
-        <KpiCard
-          title="Vehicle Insurance"
-          value={stats.vehiclePolicies}
-          icon={<Car size={16} />}
-        />
-        <KpiCard
-          title="Mutual Fund Clients"
-          value={stats.mutualFundClients}
-          icon={<Landmark size={16} />}
-        />
-        <KpiCard
-          title="Monthly Revenue"
-          value={fmt(stats.monthlyRevenue)}
-          icon={<IndianRupee size={16} />}
-        />
+      {/* KPI CARDS */}
+
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4 mb-5">
+
+        <Card title="Total Leads" value="22" icon={<Users size={18} />} />
+        <Card title="Insurance Clients" value="22" icon={<Shield size={18} />} />
+        <Card title="Vehicle Insurance" value="22" icon={<Car size={18} />} />
+        <Card title="Mutual Fund Clients" value="22" icon={<Landmark size={18} />} />
+        <Card title="Monthly Revenue" value="₹28,04,450" icon={<IndianRupee size={18} />} />
+
+        <Card title="Monthly Commission" value="₹3,99,410" icon={<IndianRupee size={18} />} />
+        <Card title="Upcoming Renewals" value="7" icon={<Calendar size={18} />} />
+        <Card title="Today's Follow-Ups" value="1" icon={<Clock size={18} />} />
+        <Card title="Pending Tasks" value="8" icon={<ClipboardCheck size={18} />} />
+
       </div>
 
-      {/* ── KPI Row 2 — 4 cards ───────────────── */}
-      <div className="grid grid-cols-4 gap-3 mb-5">
-        <KpiCard
-          title="Monthly Commission"
-          value={fmt(stats.monthlyCommission)}
-          icon={<IndianRupee size={16} />}
-        />
-        <KpiCard
-          title="Upcoming Renewals"
-          value={stats.upcomingRenewals}
-          icon={<Calendar size={16} />}
-        />
-        <KpiCard
-          title="Today's Follow-Ups"
-          value={stats.followUps}
-          icon={<Clock size={16} />}
-        />
-        <KpiCard
-          title="Pending Tasks"
-          value={stats.pendingTasks}
-          icon={<ClipboardCheck size={16} />}
-        />
-      </div>
+      {/* CHARTS */}
 
-      {/* ── Charts Row 1 ──────────────────────── */}
-      <div className="grid grid-cols-4 gap-4 mb-4">
+      <div className="grid xl:grid-cols-4 gap-4 mb-5">
 
-        {/* Revenue Trend — 3/4 */}
-        <div className="col-span-3 bg-white rounded-xl border border-slate-100 p-4">
-          <p className="text-sm font-semibold text-slate-700 mb-3">
+        <div className="xl:col-span-3 bg-white rounded-xl shadow-sm p-4">
+
+          <h2 className="font-semibold text-sm mb-3">
             Revenue Trend (6 mo)
-          </p>
-          <div className="h-[230px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={stats.revenueData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                <XAxis
-                  dataKey="month"
-                  tick={{ fontSize: 11, fill: "#94a3b8" }}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <YAxis
-                  tick={{ fontSize: 11, fill: "#94a3b8" }}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <Tooltip
-                  contentStyle={{
-                    fontSize: 12,
-                    borderRadius: 8,
-                    border: "1px solid #e2e8f0",
-                  }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="revenue"
-                  stroke="#2563eb"
-                  strokeWidth={2}
-                  dot={{ r: 4, fill: "#2563eb", strokeWidth: 0 }}
-                  activeDot={{ r: 5 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+          </h2>
+
+          <div className="h-[280px]">
+  <ResponsiveContainer width="100%" height="100%">
+    <LineChart data={revenueData}>
+      <CartesianGrid strokeDasharray="3 3" />
+
+      <XAxis dataKey="month" />
+
+      <YAxis />
+
+      <Tooltip />
+
+      <Line
+        type="monotone"
+        dataKey="revenue"
+        stroke="#2563eb"
+        strokeWidth={3}
+      />
+    </LineChart>
+  </ResponsiveContainer>
+</div>
         </div>
 
-        {/* Service Distribution — 1/4 */}
-        <div className="bg-white rounded-xl border border-slate-100 p-4 flex flex-col">
-          <p className="text-sm font-semibold text-slate-700 mb-2">
+        <div className="bg-white rounded-xl shadow-sm p-4">
+
+          <h2 className="font-semibold text-sm mb-3">
             Service Distribution
-          </p>
-          <div className="flex-1 flex flex-col items-center justify-center">
-            <ResponsiveContainer width="100%" height={170}>
-              <PieChart>
-                <Pie
-                  data={stats.serviceData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={42}
-                  outerRadius={68}
-                  paddingAngle={2}
-                >
-                  {stats.serviceData.map((_: any, i: number) => (
-                    <Cell key={i} fill={PIE_COLORS[i]} />
-                  ))}
-                </Pie>
-                <Tooltip
-                  contentStyle={{
-                    fontSize: 12,
-                    borderRadius: 8,
-                    border: "1px solid #e2e8f0",
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
+          </h2>
 
-            {/* Legend */}
-            <div className="flex gap-3 mt-1">
-              {[
-                { label: "Insurance",    color: "#2563eb" },
-                { label: "Vehicle",      color: "#22c55e" },
-                { label: "Mutual Funds", color: "#f59e0b" },
-              ].map((item) => (
-                <div key={item.label} className="flex items-center gap-1">
-                  <span
-                    className="w-2 h-2 rounded-full shrink-0"
-                    style={{ background: item.color }}
-                  />
-                  <span className="text-[10px] text-slate-500">
-                    {item.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
+         <div className="h-[280px]">
+  <ResponsiveContainer width="100%" height="100%">
+    <PieChart>
+      <Pie
+        data={serviceData}
+        dataKey="value"
+        nameKey="name"
+        cx="50%"
+        cy="50%"
+        innerRadius={60}
+        outerRadius={90}
+      >
+        {serviceData.map((_, index) => (
+          <Cell
+            key={index}
+            fill={COLORS[index]}
+          />
+        ))}
+      </Pie>
+
+      <Tooltip />
+    </PieChart>
+  </ResponsiveContainer>
+
+  <div className="flex justify-center gap-4 mt-2 text-sm">
+    <span className="text-blue-600">
+      ● Insurance
+    </span>
+
+    <span className="text-teal-600">
+      ● Vehicle
+    </span>
+
+    <span className="text-amber-500">
+      ● Mutual Funds
+    </span>
+  </div>
+</div>
         </div>
+
       </div>
 
-      {/* ── Charts Row 2 ──────────────────────── */}
-      <div className="grid grid-cols-4 gap-4">
+      {/* FOLLOWUPS + ACTIVITY */}
 
-        {/* Target vs Achievement — 3/4 */}
-        <div className="col-span-3 bg-white rounded-xl border border-slate-100 p-4">
-          <p className="text-sm font-semibold text-slate-700 mb-3">
-            Target vs Achievement
-          </p>
-          <div className="h-[230px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={targetData} barCategoryGap="40%">
-                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                <XAxis
-                  dataKey="month"
-                  tick={{ fontSize: 11, fill: "#94a3b8" }}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <YAxis
-                  tick={{ fontSize: 11, fill: "#94a3b8" }}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <Tooltip
-                  contentStyle={{
-                    fontSize: 12,
-                    borderRadius: 8,
-                    border: "1px solid #e2e8f0",
-                  }}
-                />
-                <Legend
-                  iconType="square"
-                  iconSize={10}
-                  wrapperStyle={{ fontSize: 11, paddingTop: 8 }}
-                />
-                <Bar
-                  dataKey="target"
-                  name="target"
-                  fill="#1e3a5f"
-                  radius={[3, 3, 0, 0]}
-                  maxBarSize={28}
-                />
-                <Bar
-                  dataKey="achievement"
-                  name="Achievement"
-                  fill="#2563eb"
-                  radius={[3, 3, 0, 0]}
-                  maxBarSize={28}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+      <div className="grid xl:grid-cols-4 gap-4 mb-5">
 
-        {/* Upcoming Renewals — 1/4 */}
-        <div className="bg-white rounded-xl border border-slate-100 p-4">
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-sm font-semibold text-slate-700">
-              Upcoming Renewals
-            </p>
-            <button className="text-xs text-blue-600 hover:underline">
-              View
+        <div className="xl:col-span-3 bg-white rounded-xl shadow-sm">
+
+          <div className="p-3 border-b flex justify-between">
+            <h2 className="font-semibold text-sm">
+              Upcoming Follow-ups
+            </h2>
+
+            <button className="text-xs text-blue-600">
+              View all
             </button>
           </div>
 
-          <div className="divide-y divide-slate-50">
-            {MOCK_RENEWALS.map((r, i) => (
-              <div
-                key={i}
-                className="flex items-center justify-between py-2.5"
-              >
-                <div>
-                  <p className="text-xs font-semibold text-slate-700 leading-tight">
-                    {r.name}
-                  </p>
-                  <p className="text-[10px] text-slate-400 mt-0.5">
-                    {r.sub}
-                  </p>
-                </div>
-                <span className="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded font-semibold shrink-0">
-                  {r.days}d
-                </span>
-              </div>
-            ))}
+          <div className="divide-y">
+
+            <Item
+              title="Collect KYC documents"
+              sub="Rahul Sharma • Due 2026-05-12"
+              badge="In Progress"
+            />
+
+            <Item
+              title="Process SIP registration ₹10,000"
+              sub="Priya Iyer • Due 2026-05-11"
+              badge="In Progress"
+            />
+
+            <Item
+              title="Call new lead"
+              sub="Karan Mehta • Due 2026-05-10"
+              badge="Pending"
+            />
+
+            <Item
+              title="E-mandate follow up"
+              sub="Sneha Kapoor • Due 2026-05-13"
+              badge="Follow-up Required"
+            />
+
           </div>
+
         </div>
+
+        <div className="bg-white rounded-xl shadow-sm">
+
+          <div className="p-3 border-b">
+            <h2 className="font-semibold text-sm">
+              Recent Activity
+            </h2>
+          </div>
+
+          <div className="divide-y">
+
+            <Activity text="New lead from website" time="10 min ago" />
+            <Activity text="Task completed" time="1 hr ago" />
+            <Activity text="KYC uploaded" time="2 hr ago" />
+            <Activity text="Account opened" time="Yesterday" />
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* WEBSITE INQUIRIES */}
+
+      <div className="bg-white rounded-xl shadow-sm">
+
+        <div className="p-3 flex justify-between">
+          <h2 className="font-semibold text-sm">
+            New Website Inquiries
+          </h2>
+
+          <button className="text-xs text-blue-600">
+            All leads
+          </button>
+        </div>
+
+        <div className="divide-y">
+
+          <Inquiry name="Karan Mehta" phone="+91 90123 45678" />
+          <Inquiry name="Arjun Desai" phone="+91 91234 87654" />
+          <Inquiry name="Rohit Khanna" phone="+91 90090 12121" />
+
+        </div>
+
       </div>
 
     </div>
   );
 }
 
-/* ── KPI Card ──────────────────────────────────────────────── */
-function KpiCard({
+function Card({
   title,
   value,
   icon,
 }: {
   title: string;
-  value: any;
+  value: string;
   icon: React.ReactNode;
 }) {
   return (
-    <div className="bg-white rounded-xl border border-slate-100 p-4">
-      <div className="flex items-start justify-between mb-3">
-        <span className="text-[11px] text-slate-500 leading-tight">
-          {title}
-        </span>
-        <span className="text-blue-300">{icon}</span>
+    <div className="bg-white rounded-xl p-4 shadow-sm">
+      <div className="flex justify-between mb-3">
+        <span className="text-xs text-slate-500">{title}</span>
+        {icon}
       </div>
-      <p className="text-2xl font-bold text-slate-800 leading-none">
+
+      <h3 className="text-2xl font-bold text-slate-800">
         {value}
-      </p>
+      </h3>
+    </div>
+  );
+}
+
+function Item({
+  title,
+  sub,
+  badge,
+}: {
+  title: string;
+  sub: string;
+  badge: string;
+}) {
+  return (
+    <div className="p-3 flex justify-between items-center">
+      <div>
+        <p className="text-sm font-medium">{title}</p>
+        <p className="text-xs text-slate-500">{sub}</p>
+      </div>
+
+      <span className="text-xs bg-slate-100 px-3 py-1 rounded-full">
+        {badge}
+      </span>
+    </div>
+  );
+}
+
+function Activity({
+  text,
+  time,
+}: {
+  text: string;
+  time: string;
+}) {
+  return (
+    <div className="p-3">
+      <p className="text-sm">{text}</p>
+      <p className="text-xs text-slate-500">{time}</p>
+    </div>
+  );
+}
+
+function Inquiry({
+  name,
+  phone,
+}: {
+  name: string;
+  phone: string;
+}) {
+  return (
+    <div className="p-3 flex justify-between items-center">
+      <div>
+        <p className="text-sm font-medium">{name}</p>
+        <p className="text-xs text-slate-500">
+          {phone} • Website
+        </p>
+      </div>
+
+      <button className="text-xs text-blue-600">
+        Open
+      </button>
     </div>
   );
 }
