@@ -1,41 +1,98 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
-import { Search, Download, UserPlus } from "lucide-react";
+
+import {
+  Search,
+  Download,
+  UserPlus,
+} from "lucide-react";
+
 import { Link } from "react-router-dom";
 
 export default function Leads() {
   const [leads, setLeads] = useState<any[]>([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
-    api
-      .get("/leads")
-      .then((res) => setLeads(res.data))
-      .catch((err) => console.log(err));
+    fetchLeads();
   }, []);
 
+  const fetchLeads = async () => {
+    try {
+      const res = await api.get("/leads");
+
+      setLeads(res.data);
+    }
+
+    catch (err) {
+      console.log(err);
+    }
+  };
+
+  const filteredLeads = leads.filter((lead) =>
+    lead.name
+      ?.toLowerCase()
+      .includes(search.toLowerCase())
+  );
+
   const statusBadge = (status: string) => {
+    let styles =
+      "bg-slate-100 text-slate-600";
+
+    if (status === "Converted") {
+      styles = "bg-green-100 text-green-700";
+    }
+
+    if (status === "Interested") {
+      styles = "bg-blue-100 text-blue-700";
+    }
+
+    if (status === "Follow-Up Pending") {
+      styles = "bg-yellow-100 text-yellow-700";
+    }
+
     return (
-      <span className="px-2 py-0.5 rounded-full text-[11px] bg-slate-100 text-slate-600 border">
-        • {status}
+      <span
+        className={`px-3 py-1 rounded-full text-xs ${styles}`}
+      >
+        {status}
       </span>
     );
   };
 
   return (
-    <div className="p-4 bg-slate-50 min-h-screen">
+    <div className="p-6 bg-slate-50 min-h-screen">
 
-      <div className="mb-6">
-        <h1 className="text-4xl font-semibold text-slate-800">
-          Leads
-        </h1>
+      {/* Header */}
 
-        <p className="text-sm text-slate-500 mt-2">
-          Inquiries from your website and referrals.
-          Assign and convert to clients.
-        </p>
+      <div className="flex justify-between items-center mb-6">
+
+        <div>
+
+          <h1 className="text-4xl font-bold text-slate-900">
+            Leads
+          </h1>
+
+          <p className="text-slate-500 mt-2">
+            Manage all customer inquiries
+          </p>
+
+        </div>
+
+        <Link
+          to="/add-lead"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl flex items-center gap-2"
+        >
+          <UserPlus size={18} />
+
+          Add Lead
+        </Link>
+
       </div>
 
-      <div className="bg-white rounded-3xl border overflow-hidden">
+      {/* Search */}
+
+      <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
 
         <div className="p-4 border-b">
 
@@ -49,102 +106,140 @@ export default function Leads() {
               />
 
               <input
-                placeholder="Search by name, code, contact..."
-                className="w-full border rounded-xl pl-10 py-2.5"
+                type="text"
+                placeholder="Search lead..."
+                value={search}
+                onChange={(e) =>
+                  setSearch(e.target.value)
+                }
+                className="w-full border rounded-xl pl-10 py-3 outline-none"
               />
 
             </div>
 
-            <select className="border rounded-xl px-4">
-              <option>All employees</option>
-            </select>
-
-            <select className="border rounded-xl px-4">
-              <option>All statuses</option>
-            </select>
-
-            <button className="flex items-center gap-2 px-4 py-2 bg-white border rounded-xl text-sm">
+            <button
+              className="border rounded-xl px-4 flex items-center gap-2"
+            >
               <Download size={16} />
+
               Export
             </button>
-
-            <Link
-              to="/add-lead"
-              className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl text-sm"
-            >
-              <UserPlus size={16} />
-              Add Lead
-            </Link>
 
           </div>
 
         </div>
 
-        <table className="w-full text-[11px]">
+        {/* Table */}
 
-          <thead>
+        <div className="overflow-x-auto">
 
-            <tr className="text-left text-xs text-slate-500 border-b">
+          <table className="w-full text-sm">
 
-              <th className="px-3 py-2">Client</th>
-              <th className="px-3 py-2">Phone</th>
-              <th className="px-3 py-2">Source</th>
-              <th className="px-3 py-2">Code</th>
-              <th className="px-3 py-2">Referred By</th>
-              <th className="px-3 py-2">Task</th>
-              <th className="px-3 py-2">Processed By</th>
-              <th className="px-3 py-2">Documents</th>
-              <th className="px-3 py-2">Account</th>
-              <th className="px-3 py-2">Mandate</th>
-              <th className="px-3 py-2">SIP</th>
+            <thead className="bg-slate-50 border-b">
 
-            </tr>
+              <tr>
 
-          </thead>
+                <th className="text-left p-4">
+                  Name
+                </th>
 
-          <tbody>
+                <th className="text-left p-4">
+                  Mobile
+                </th>
 
-            {leads.map((lead) => (
+                <th className="text-left p-4">
+                  Email
+                </th>
 
-              <tr
-                key={lead._id}
-                className="border-b hover:bg-slate-50"
-              >
+                <th className="text-left p-4">
+                  Category
+                </th>
 
-                <td className="p-4 text-sm">{lead.client}</td>
-                <td className="p-4 text-sm">{lead.phone}</td>
-                <td className="p-4 text-sm">{lead.source}</td>
-                <td className="p-4 text-sm">{lead.code}</td>
-                <td className="p-4 text-sm">{lead.referredBy}</td>
-                <td className="p-4 text-sm">{lead.task}</td>
-                <td className="p-4 text-sm">{lead.processedBy}</td>
+                <th className="text-left p-4">
+                  Product
+                </th>
 
-                <td className="p-4 text-sm">
-                  {statusBadge(lead.documents)}
-                </td>
+                <th className="text-left p-4">
+                  Premium
+                </th>
 
-                <td className="p-4 text-sm">
-                  {statusBadge(lead.account)}
-                </td>
+                <th className="text-left p-4">
+                  Follow Up
+                </th>
 
-                <td className="p-4 text-sm">
-                  {statusBadge(lead.mandate)}
-                </td>
+                <th className="text-left p-4">
+                  Contact Method
+                </th>
 
-                <td className="p-4 text-sm">
-                  {statusBadge(lead.sip)}
-                </td>
+                <th className="text-left p-4">
+                  Status
+                </th>
 
               </tr>
 
-            ))}
+            </thead>
 
-          </tbody>
+            <tbody>
 
-        </table>
+              {filteredLeads.map((lead) => (
+
+                <tr
+                  key={lead._id}
+                  className="border-b hover:bg-slate-50"
+                >
+
+                  <td className="p-4 font-medium">
+                    {lead.name}
+                  </td>
+
+                  <td className="p-4">
+                    {lead.mobile}
+                  </td>
+
+                  <td className="p-4">
+                    {lead.email}
+                  </td>
+
+                  <td className="p-4">
+                    {lead.productCategory}
+                  </td>
+
+                  <td className="p-4">
+                    {lead.productType}
+                  </td>
+
+                  <td className="p-4">
+                    ₹{lead.premiumAmount}
+                  </td>
+
+                  <td className="p-4">
+                    {lead.followUpDate}
+                  </td>
+
+                  <td className="p-4">
+                    {lead.contactMethod}
+                  </td>
+
+                  <td className="p-4">
+                    {statusBadge(
+                      lead.status
+                    )}
+                  </td>
+
+                </tr>
+
+              ))}
+
+            </tbody>
+
+          </table>
+
+        </div>
 
         <div className="p-4 text-sm text-slate-500">
-          Showing {leads.length} leads
+
+          Total Leads: {filteredLeads.length}
+
         </div>
 
       </div>
