@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type Client = {
   id: number;
@@ -8,6 +9,7 @@ type Client = {
 };
 
 export default function MutualFundClients() {
+  const navigate = useNavigate();
   const [clients, setClients] = useState<Client[]>([]);
 
   const loadClients = () => {
@@ -16,42 +18,69 @@ export default function MutualFundClients() {
   };
 
   useEffect(() => {
-    // initial load
     loadClients();
 
-    // reload when user comes back to tab/page
     const handleFocus = () => loadClients();
     window.addEventListener("focus", handleFocus);
 
-    return () => {
-      window.removeEventListener("focus", handleFocus);
-    };
+    return () => window.removeEventListener("focus", handleFocus);
   }, []);
+
+  const totalInvestment = clients.reduce((sum, c) => {
+    return sum + Number(c.investment || 0);
+  }, 0);
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-semibold mb-4">
-        Mutual Fund Clients
-      </h2>
+      
+      {/* HEADER */}
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h2 className="text-2xl font-semibold">
+            Mutual Fund Clients
+          </h2>
+          <p className="text-gray-500 text-sm">
+            Total Clients: {clients.length} | Total Investment: ₹{totalInvestment}
+          </p>
+        </div>
 
+        {/* ADD BUTTON */}
+        <button
+          onClick={() => navigate("/add-mf-client")}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          + Add Client
+        </button>
+      </div>
+
+      {/* CONTENT */}
       {clients.length === 0 ? (
-        <p className="text-gray-500">No clients found</p>
+        <div className="text-center text-gray-500 mt-10">
+          No clients added yet. Click “Add Client” to start.
+        </div>
       ) : (
-        <div className="space-y-3">
+        <div className="grid gap-3">
           {clients.map((client) => (
             <div
               key={client.id}
-              className="border p-3 rounded shadow-sm bg-white"
+              className="border bg-white p-4 rounded shadow-sm flex justify-between items-center"
             >
-              <p>
-                <b>Name:</b> {client.name}
-              </p>
-              <p>
-                <b>Mobile:</b> {client.mobile}
-              </p>
-              <p>
-                <b>Investment:</b> {client.investment}
-              </p>
+              
+              {/* LEFT */}
+              <div>
+                <p className="font-semibold">{client.name}</p>
+                <p className="text-sm text-gray-600">
+                  {client.mobile}
+                </p>
+              </div>
+
+              {/* RIGHT */}
+              <div className="text-right">
+                <p className="font-semibold text-green-600">
+                  ₹{client.investment}
+                </p>
+              </div>
+
             </div>
           ))}
         </div>
