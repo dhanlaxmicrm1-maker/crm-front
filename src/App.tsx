@@ -8,7 +8,6 @@ import Dashboard from "./pages/Dashboard";
 import Leads from "./pages/Leads";
 import AddLead from "./pages/AddLead";
 
-import AllClients from "./pages/AllClients";
 import AddClient from "./pages/AddClient";
 
 import VehicleInsurance from "./pages/VehicleInsurance";
@@ -39,7 +38,6 @@ function App() {
               <Route path="/add-lead" element={<AddLead />} />
 
               {/* Clients */}
-              <Route path="/all-clients" element={<AllClients />} />
               <Route path="/add-client" element={<AddClient />} />
 
               {/* Insurance */}
