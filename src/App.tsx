@@ -29,17 +29,20 @@ function App() {
         <div className="ml-72">
           <Header />
 
-          <main className="pt-16 min-h-screen">
+          <main className="pt-[72px] min-h-screen">
             <Routes>
-
+              {/* Dashboard */}
               <Route path="/" element={<Dashboard />} />
 
+              {/* Leads */}
               <Route path="/leads" element={<Leads />} />
               <Route path="/add-lead" element={<AddLead />} />
 
+              {/* Clients */}
               <Route path="/all-clients" element={<AllClients />} />
               <Route path="/add-client" element={<AddClient />} />
 
+              {/* Insurance */}
               <Route
                 path="/vehicle-insurance"
                 element={<VehicleInsurance />}
@@ -55,12 +58,11 @@ function App() {
                 element={<MutualFundClients />}
               />
 
-
+              {/* Other Pages */}
               <Route path="/tasks" element={<Tasks />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/settings" element={<Settings />} />
-
             </Routes>
           </main>
         </div>
