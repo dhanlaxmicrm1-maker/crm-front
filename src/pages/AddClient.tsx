@@ -4,227 +4,196 @@ import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
 export default function AddClient() {
+
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
     name: "",
-    mobile: "",
+    phone: "",
     email: "",
-    productCategory: "",
-    productType: "",
-    policyNumber: "",
-    policyIssueDate: "",
-    renewalDate: "",
-    premiumPaymentTerm: "",
-    premiumAmount: "",
-    sumAssured: "",
-    commissionAmount: "",
-    notes: "",
+    city: "",
+    pan: "",
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement
-    >
-  ) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   const submit = async () => {
+
     try {
+
       await api.post("/clients", form);
 
       alert("Client Added Successfully");
 
       navigate("/all-clients");
-    } catch (err) {
+
+    }
+
+    catch (err) {
+
       console.log(err);
 
       alert("Error Adding Client");
+
     }
   };
 
   return (
-    <div className="p-8 bg-slate-50 min-h-screen">
 
-      <div className="bg-white rounded-2xl shadow-sm p-8 max-w-5xl mx-auto">
+    <div className="p-6 bg-slate-50 min-h-screen">
 
-        <h1 className="text-3xl font-bold mb-8">
-          Add Client
-        </h1>
+      <h1 className="text-3xl font-bold mb-2">
 
-        <div className="grid grid-cols-2 gap-6">
+        Add Client
+
+      </h1>
+
+      <p className="text-slate-500 mb-6">
+
+        Create a new client profile
+
+      </p>
+
+      <div className="bg-white rounded-2xl p-6 shadow-sm max-w-4xl">
+
+        <div className="grid grid-cols-2 gap-4">
 
           <div>
-            <label>Client Name *</label>
+
+            <label className="text-sm font-medium">
+
+              Client Name
+
+            </label>
 
             <input
-              name="name"
+
               value={form.name}
-              onChange={handleChange}
-              className="w-full mt-2 border rounded-xl px-4 py-3"
+
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  name: e.target.value,
+                })
+              }
+
+              className="w-full mt-1 border border-slate-200 rounded-xl px-4 py-3"
+
             />
+
           </div>
 
           <div>
-            <label>Mobile</label>
+
+            <label className="text-sm font-medium">
+
+              Phone
+
+            </label>
 
             <input
-              name="mobile"
-              value={form.mobile}
-              onChange={handleChange}
-              className="w-full mt-2 border rounded-xl px-4 py-3"
+
+              value={form.phone}
+
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  phone: e.target.value,
+                })
+              }
+
+              className="w-full mt-1 border border-slate-200 rounded-xl px-4 py-3"
+
             />
+
           </div>
 
           <div>
-            <label>Email</label>
+
+            <label className="text-sm font-medium">
+
+              Email
+
+            </label>
 
             <input
-              name="email"
+
               value={form.email}
-              onChange={handleChange}
-              className="w-full mt-2 border rounded-xl px-4 py-3"
+
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  email: e.target.value,
+                })
+              }
+
+              className="w-full mt-1 border border-slate-200 rounded-xl px-4 py-3"
+
             />
+
           </div>
 
           <div>
-            <label>Product Category</label>
+
+            <label className="text-sm font-medium">
+
+              City
+
+            </label>
 
             <input
-              name="productCategory"
-              value={form.productCategory}
-              onChange={handleChange}
-              className="w-full mt-2 border rounded-xl px-4 py-3"
+
+              value={form.city}
+
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  city: e.target.value,
+                })
+              }
+
+              className="w-full mt-1 border border-slate-200 rounded-xl px-4 py-3"
+
             />
+
           </div>
 
           <div>
-            <label>Product Type</label>
+
+            <label className="text-sm font-medium">
+
+              PAN
+
+            </label>
 
             <input
-              name="productType"
-              value={form.productType}
-              onChange={handleChange}
-              className="w-full mt-2 border rounded-xl px-4 py-3"
+
+              value={form.pan}
+
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  pan: e.target.value,
+                })
+              }
+
+              className="w-full mt-1 border border-slate-200 rounded-xl px-4 py-3"
+
             />
-          </div>
 
-          <div>
-            <label>Policy Number</label>
-
-            <input
-              name="policyNumber"
-              value={form.policyNumber}
-              onChange={handleChange}
-              className="w-full mt-2 border rounded-xl px-4 py-3"
-            />
-          </div>
-
-          <div>
-            <label>Policy Issue Date</label>
-
-            <input
-              type="date"
-              name="policyIssueDate"
-              value={form.policyIssueDate}
-              onChange={handleChange}
-              className="w-full mt-2 border rounded-xl px-4 py-3"
-            />
-          </div>
-
-          <div>
-            <label>Renewal Date</label>
-
-            <input
-              type="date"
-              name="renewalDate"
-              value={form.renewalDate}
-              onChange={handleChange}
-              className="w-full mt-2 border rounded-xl px-4 py-3"
-            />
-          </div>
-
-          <div>
-            <label>Premium Payment Term</label>
-
-            <input
-              name="premiumPaymentTerm"
-              value={form.premiumPaymentTerm}
-              onChange={handleChange}
-              className="w-full mt-2 border rounded-xl px-4 py-3"
-            />
-          </div>
-
-          <div>
-            <label>Premium Amount</label>
-
-            <input
-              name="premiumAmount"
-              value={form.premiumAmount}
-              onChange={handleChange}
-              className="w-full mt-2 border rounded-xl px-4 py-3"
-            />
-          </div>
-
-          <div>
-            <label>Sum Assured</label>
-
-            <input
-              name="sumAssured"
-              value={form.sumAssured}
-              onChange={handleChange}
-              className="w-full mt-2 border rounded-xl px-4 py-3"
-            />
-          </div>
-
-          <div>
-            <label>Commission Amount</label>
-
-            <input
-              name="commissionAmount"
-              value={form.commissionAmount}
-              onChange={handleChange}
-              className="w-full mt-2 border rounded-xl px-4 py-3"
-            />
           </div>
 
         </div>
 
-        <div className="mt-6">
+        <button
 
-          <label>Notes</label>
+          onClick={submit}
 
-          <textarea
-            rows={4}
-            name="notes"
-            value={form.notes}
-            onChange={handleChange}
-            className="w-full mt-2 border rounded-xl px-4 py-3"
-          />
+          className="mt-6 bg-blue-600 text-white px-5 py-3 rounded-xl hover:bg-blue-700"
 
-        </div>
+        >
 
-        <div className="flex justify-end gap-3 mt-8">
+          Save Client
 
-          <button
-            onClick={() => navigate("/all-clients")}
-            className="border border-slate-300 px-6 py-3 rounded-xl"
-          >
-            Cancel
-          </button>
-
-          <button
-            onClick={submit}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl"
-          >
-            Save
-          </button>
-
-        </div>
+        </button>
 
       </div>
 
