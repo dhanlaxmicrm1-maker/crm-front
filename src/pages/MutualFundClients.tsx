@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import api from "../services/api";
 
 import {
@@ -8,34 +7,31 @@ import {
   Plus,
 } from "lucide-react";
 
-export default function VehicleInsurance() {
-
-  const [policies, setPolicies] = useState<any[]>([]);
+export default function MutualFundClients() {
+  const [clients, setClients] = useState<any[]>([]);
 
   const [showModal, setShowModal] = useState(false);
 
-  const [newPolicy, setNewPolicy] = useState({
+  const [newClient, setNewClient] = useState({
     customerName: "",
-    vehicleType: "",
-    vehicleNumber: "",
+    scheme: "",
+    folioNumber: "",
     mobileNumber: "",
-    premium: "",
-    offerPrice: "",
-    discount: "",
-    cost: "",
-    insurer: "",
-    agentCompany: "",
+    investmentAmount: "",
+    sipAmount: "",
+    fundHouse: "",
+    advisor: "",
   });
 
   useEffect(() => {
-    fetchPolicies();
+    fetchClients();
   }, []);
 
-  const fetchPolicies = async () => {
+  const fetchClients = async () => {
     try {
-      const res = await api.get("/vehicle");
+      const res = await api.get("/mutualfund");
 
-      setPolicies(res.data);
+      setClients(res.data);
     }
 
     catch (err) {
@@ -43,63 +39,68 @@ export default function VehicleInsurance() {
     }
   };
 
-  const addPolicy = async () => {
+  const addClient = async () => {
     try {
 
-      await api.post("/vehicle", {
-        customerName: newPolicy.customerName,
-        vehicleType: newPolicy.vehicleType,
-        vehicleNumber: newPolicy.vehicleNumber,
-        mobileNumber: newPolicy.mobileNumber,
-        premium: Number(newPolicy.premium),
-        offerPrice: Number(newPolicy.offerPrice),
-        discount: Number(newPolicy.discount),
-        cost: Number(newPolicy.cost),
-        insurer: newPolicy.insurer,
-        agentCompany: newPolicy.agentCompany,
+      await api.post("/mutualfund", {
+        customerName: newClient.customerName,
+
+        scheme: newClient.scheme,
+
+        folioNumber: newClient.folioNumber,
+
+        mobileNumber: newClient.mobileNumber,
+
+        investmentAmount: Number(
+          newClient.investmentAmount
+        ),
+
+        sipAmount: Number(
+          newClient.sipAmount
+        ),
+
+        fundHouse: newClient.fundHouse,
+
+        advisor: newClient.advisor,
       });
 
-      fetchPolicies();
+      fetchClients();
 
       setShowModal(false);
 
-      setNewPolicy({
+      setNewClient({
         customerName: "",
-        vehicleType: "",
-        vehicleNumber: "",
+        scheme: "",
+        folioNumber: "",
         mobileNumber: "",
-        premium: "",
-        offerPrice: "",
-        discount: "",
-        cost: "",
-        insurer: "",
-        agentCompany: "",
+        investmentAmount: "",
+        sipAmount: "",
+        fundHouse: "",
+        advisor: "",
       });
 
-      alert("Policy Added");
-
+      alert("Mutual Fund Client Added");
     }
 
     catch (err) {
 
       console.log(err);
 
-      alert("Error adding policy");
+      alert("Error adding client");
     }
   };
 
   return (
-
     <div className="p-4 bg-slate-50 min-h-screen">
 
       <div className="mb-4">
 
         <h1 className="text-3xl font-bold">
-          Vehicle Insurance
+          Mutual Fund Clients
         </h1>
 
         <p className="text-xs text-slate-500">
-          Vehicle policies and renewals
+          Mutual fund investments and SIPs
         </p>
 
       </div>
@@ -116,7 +117,7 @@ export default function VehicleInsurance() {
             />
 
             <input
-              placeholder="Search vehicle..."
+              placeholder="Search client..."
               className="w-full bg-slate-50 rounded-lg pl-9 py-2 text-sm outline-none"
             />
 
@@ -139,7 +140,7 @@ export default function VehicleInsurance() {
 
               <Plus size={14} />
 
-              Add Policy
+              Add Client
 
             </button>
 
@@ -155,25 +156,37 @@ export default function VehicleInsurance() {
 
               <tr className="bg-slate-100">
 
-                <th className="border p-2 text-left">Customer</th>
+                <th className="border p-2 text-left">
+                  Customer
+                </th>
 
-                <th className="border p-2 text-left">Vehicle Type</th>
+                <th className="border p-2 text-left">
+                  Scheme
+                </th>
 
-                <th className="border p-2 text-left">Vehicle No</th>
+                <th className="border p-2 text-left">
+                  Folio No
+                </th>
 
-                <th className="border p-2 text-left">Mobile</th>
+                <th className="border p-2 text-left">
+                  Mobile
+                </th>
 
-                <th className="border p-2 text-left">Premium</th>
+                <th className="border p-2 text-left">
+                  Investment
+                </th>
 
-                <th className="border p-2 text-left">Offer Price</th>
+                <th className="border p-2 text-left">
+                  SIP
+                </th>
 
-                <th className="border p-2 text-left">Discount</th>
+                <th className="border p-2 text-left">
+                  Fund House
+                </th>
 
-                <th className="border p-2 text-left">Cost</th>
-
-                <th className="border p-2 text-left">Insurer</th>
-
-                <th className="border p-2 text-left">Agent</th>
+                <th className="border p-2 text-left">
+                  Advisor
+                </th>
 
               </tr>
 
@@ -181,48 +194,40 @@ export default function VehicleInsurance() {
 
             <tbody>
 
-              {policies.map((policy) => (
+              {clients.map((client) => (
 
-                <tr key={policy._id}>
+                <tr key={client._id}>
 
                   <td className="border p-2">
-                    {policy.customerName}
+                    {client.customerName}
                   </td>
 
                   <td className="border p-2">
-                    {policy.vehicleType}
+                    {client.scheme}
                   </td>
 
                   <td className="border p-2">
-                    {policy.vehicleNumber}
+                    {client.folioNumber}
                   </td>
 
                   <td className="border p-2">
-                    {policy.mobileNumber}
+                    {client.mobileNumber}
                   </td>
 
                   <td className="border p-2">
-                    ₹{policy.premium}
+                    ₹{client.investmentAmount}
                   </td>
 
                   <td className="border p-2">
-                    ₹{policy.offerPrice}
+                    ₹{client.sipAmount}
                   </td>
 
                   <td className="border p-2">
-                    ₹{policy.discount}
+                    {client.fundHouse}
                   </td>
 
                   <td className="border p-2">
-                    ₹{policy.cost}
-                  </td>
-
-                  <td className="border p-2">
-                    {policy.insurer}
-                  </td>
-
-                  <td className="border p-2">
-                    {policy.agentCompany}
+                    {client.advisor}
                   </td>
 
                 </tr>
@@ -245,13 +250,13 @@ export default function VehicleInsurance() {
 
             <h2 className="text-xl font-bold mb-4">
 
-              Add Vehicle Policy
+              Add Mutual Fund Client
 
             </h2>
 
             <div className="grid grid-cols-2 gap-3">
 
-              {Object.keys(newPolicy).map((field) => (
+              {Object.keys(newClient).map((field) => (
 
                 <input
 
@@ -259,11 +264,16 @@ export default function VehicleInsurance() {
 
                   placeholder={field}
 
-                  value={newPolicy[field as keyof typeof newPolicy]}
+                  value={
+                    newClient[
+                      field as keyof typeof newClient
+                    ]
+                  }
 
                   onChange={(e) =>
-                    setNewPolicy({
-                      ...newPolicy,
+                    setNewClient({
+                      ...newClient,
+
                       [field]: e.target.value,
                     })
                   }
@@ -280,7 +290,7 @@ export default function VehicleInsurance() {
 
               <button
 
-                onClick={addPolicy}
+                onClick={addClient}
 
                 className="bg-blue-600 text-white px-5 py-2 rounded-xl"
 
@@ -292,7 +302,9 @@ export default function VehicleInsurance() {
 
               <button
 
-                onClick={() => setShowModal(false)}
+                onClick={() =>
+                  setShowModal(false)
+                }
 
                 className="border px-5 py-2 rounded-xl"
 
@@ -311,6 +323,5 @@ export default function VehicleInsurance() {
       )}
 
     </div>
-
   );
 }
