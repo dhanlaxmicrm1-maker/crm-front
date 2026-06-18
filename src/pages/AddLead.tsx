@@ -1,132 +1,259 @@
 import { useState } from "react";
 import api from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 export default function AddLead() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
-    client: "",
-    phone: "",
-    source: "",
-    code: "",
-    referredBy: "",
-    task: "",
-    processedBy: "Admin",
-    documents: "Pending",
-    account: "Pending",
-    mandate: "Pending",
-    sip: "Pending",
+    name: "",
+    mobile: "",
+    email: "",
+    productCategory: "",
+    productType: "",
+    quotationAmount: "",
+    sumAssured: "",
+    premiumAmount: "",
+    followUpDate: "",
+    lastContacted: "",
+    contactMethod: "",
+    status: "",
+    notes: "",
   });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const submit = async () => {
     try {
       await api.post("/leads", form);
+
       alert("Lead Added Successfully");
-      window.location.href = "/leads";
+
+      navigate("/leads");
     } catch (err) {
       console.log(err);
+
       alert("Error Adding Lead");
     }
   };
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-5">Add Lead</h1>
+    <div className="p-8 bg-slate-50 min-h-screen">
 
-      <div className="flex flex-col gap-3 max-w-md">
-      
+      <div className="bg-white rounded-2xl shadow-sm p-8 max-w-5xl mx-auto">
 
-<input
-  placeholder="Client Name"
-  value={form.client}
-  onChange={(e) =>
-    setForm({ ...form, client: e.target.value })
-  }
-/>
+        <h1 className="text-3xl font-bold mb-8">
+          Add Lead
+        </h1>
 
-<input
-  placeholder="Phone"
-  value={form.phone}
-  onChange={(e) =>
-    setForm({ ...form, phone: e.target.value })
-  }
-/>
+        <div className="grid grid-cols-2 gap-6">
 
-<input
-  placeholder="Source"
-  value={form.source}
-  onChange={(e) =>
-    setForm({ ...form, source: e.target.value })
-  }
-/>
+          <div>
+            <label className="font-medium">
+              Lead Name *
+            </label>
 
-<input
-  placeholder="Code"
-  value={form.code}
-  onChange={(e) =>
-    setForm({ ...form, code: e.target.value })
-  }
-/>
+            <input
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              className="w-full mt-2 border rounded-xl px-4 py-3"
+            />
+          </div>
 
-<input
-  placeholder="Referred By"
-  value={form.referredBy}
-  onChange={(e) =>
-    setForm({ ...form, referredBy: e.target.value })
-  }
-/>
+          <div>
+            <label className="font-medium">
+              Mobile Number
+            </label>
 
-<input
-  placeholder="Task"
-  value={form.task}
-  onChange={(e) =>
-    setForm({ ...form, task: e.target.value })
-  }
-/>
+            <input
+              name="mobile"
+              value={form.mobile}
+              onChange={handleChange}
+              className="w-full mt-2 border rounded-xl px-4 py-3"
+            />
+          </div>
 
-<input
-  placeholder="Processed By"
-  value={form.processedBy}
-  onChange={(e) =>
-    setForm({ ...form, processedBy: e.target.value })
-  }
-/>
+          <div>
+            <label className="font-medium">
+              Email
+            </label>
 
-<input
-  placeholder="Documents"
-  value={form.documents}
-  onChange={(e) =>
-    setForm({ ...form, documents: e.target.value })
-  }
-/>
+            <input
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              className="w-full mt-2 border rounded-xl px-4 py-3"
+            />
+          </div>
 
-<input
-  placeholder="Account"
-  value={form.account}
-  onChange={(e) =>
-    setForm({ ...form, account: e.target.value })
-  }
-/>
+          <div>
+            <label className="font-medium">
+              Product Category
+            </label>
 
-<input
-  placeholder="Mandate"
-  value={form.mandate}
-  onChange={(e) =>
-    setForm({ ...form, mandate: e.target.value })
-  }
-/>
+            <input
+              name="productCategory"
+              value={form.productCategory}
+              onChange={handleChange}
+              className="w-full mt-2 border rounded-xl px-4 py-3"
+            />
+          </div>
 
-<input
-  placeholder="SIP"
-  value={form.sip}
-  onChange={(e) =>
-    setForm({ ...form, sip: e.target.value })
-  }
-/>        <button
+          <div>
+            <label className="font-medium">
+              Product Type
+            </label>
+
+            <input
+              name="productType"
+              value={form.productType}
+              onChange={handleChange}
+              className="w-full mt-2 border rounded-xl px-4 py-3"
+            />
+          </div>
+
+          <div>
+            <label className="font-medium">
+              Quotation Amount
+            </label>
+
+            <input
+              name="quotationAmount"
+              value={form.quotationAmount}
+              onChange={handleChange}
+              className="w-full mt-2 border rounded-xl px-4 py-3"
+            />
+          </div>
+
+          <div>
+            <label className="font-medium">
+              Sum Assured
+            </label>
+
+            <input
+              name="sumAssured"
+              value={form.sumAssured}
+              onChange={handleChange}
+              className="w-full mt-2 border rounded-xl px-4 py-3"
+            />
+          </div>
+
+          <div>
+            <label className="font-medium">
+              Premium Amount
+            </label>
+
+            <input
+              name="premiumAmount"
+              value={form.premiumAmount}
+              onChange={handleChange}
+              className="w-full mt-2 border rounded-xl px-4 py-3"
+            />
+          </div>
+
+          <div>
+            <label className="font-medium">
+              Follow-Up Date
+            </label>
+
+            <input
+              type="date"
+              name="followUpDate"
+              value={form.followUpDate}
+              onChange={handleChange}
+              className="w-full mt-2 border rounded-xl px-4 py-3"
+            />
+          </div>
+
+          <div>
+            <label className="font-medium">
+              Last Contacted
+            </label>
+
+            <input
+              type="date"
+              name="lastContacted"
+              value={form.lastContacted}
+              onChange={handleChange}
+              className="w-full mt-2 border rounded-xl px-4 py-3"
+            />
+          </div>
+
+          <div>
+            <label className="font-medium">
+              Last Contact Method
+            </label>
+
+            <select
+              name="contactMethod"
+              value={form.contactMethod}
+              onChange={handleChange}
+              className="w-full mt-2 border rounded-xl px-4 py-3"
+            >
+              <option value="">Select</option>
+              <option>Email</option>
+              <option>Call</option>
+              <option>WhatsApp</option>
+              <option>Meeting</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="font-medium">
+              Status
+            </label>
+
+            <select
+              name="status"
+              value={form.status}
+              onChange={handleChange}
+              className="w-full mt-2 border rounded-xl px-4 py-3"
+            >
+              <option value="">Select</option>
+              <option>New</option>
+              <option>Contacted</option>
+              <option>Interested</option>
+              <option>Proposal Sent</option>
+              <option>Follow-Up Pending</option>
+              <option>Converted</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div className="mt-6">
+
+          <label className="font-medium">
+            Notes
+          </label>
+
+          <textarea
+            rows={4}
+            name="notes"
+            value={form.notes}
+            onChange={handleChange}
+            className="w-full mt-2 border rounded-xl px-4 py-3"
+          />
+
+        </div>
+
+        <button
           onClick={submit}
-          className="bg-blue-600 text-white p-3 rounded"
+          className="mt-8 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl"
         >
           Save Lead
         </button>
+
       </div>
+
     </div>
   );
 }
