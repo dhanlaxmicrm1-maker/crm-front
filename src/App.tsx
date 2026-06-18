@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/layout/Sidebar";
 import Header from "./components/layout/Header";
 
+// Pages
 import Dashboard from "./pages/Dashboard";
 
 import Leads from "./pages/Leads";
@@ -14,7 +15,7 @@ import VehicleInsurance from "./pages/VehicleInsurance";
 import InsuranceClients from "./pages/InsuranceClients";
 import MutualFundClients from "./pages/MutualFundClients";
 
-// ✅ ADD THESE IMPORTS
+// ✅ Add Pages (IMPORTANT)
 import AddInsuranceClient from "./pages/AddInsuranceClient";
 import AddMutualFundClient from "./pages/AddMutualFundClient";
 
@@ -26,14 +27,21 @@ import Settings from "./pages/Settings";
 function App() {
   return (
     <BrowserRouter>
-      <div className="bg-slate-50 min-h-screen">
+      <div className="bg-slate-50 min-h-screen flex">
+        
+        {/* Sidebar */}
         <Sidebar />
 
-        <div className="ml-72">
+        {/* Main Content */}
+        <div className="flex-1 ml-72">
+          
+          {/* Header */}
           <Header />
 
-          <main className="pt-[72px] min-h-screen">
+          {/* Page Content */}
+          <main className="pt-[72px] p-4 min-h-screen">
             <Routes>
+
               {/* Dashboard */}
               <Route path="/" element={<Dashboard />} />
 
@@ -45,17 +53,14 @@ function App() {
               <Route path="/add-client" element={<AddClient />} />
 
               {/* Insurance */}
-              <Route
-                path="/vehicle-insurance"
-                element={<VehicleInsurance />}
-              />
+              <Route path="/vehicle-insurance" element={<VehicleInsurance />} />
 
               <Route
                 path="/insurance-clients"
                 element={<InsuranceClients />}
               />
 
-              {/* ✅ ADD PAGE FOR INSURANCE CLIENT */}
+              {/* ✅ Add Insurance Client Page */}
               <Route
                 path="/add-insurance-client"
                 element={<AddInsuranceClient />}
@@ -67,7 +72,7 @@ function App() {
                 element={<MutualFundClients />}
               />
 
-              {/* ✅ ADD PAGE FOR MF */}
+              {/* ✅ Add Mutual Fund Client Page */}
               <Route
                 path="/add-mf-client"
                 element={<AddMutualFundClient />}
@@ -78,6 +83,7 @@ function App() {
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/settings" element={<Settings />} />
+
             </Routes>
           </main>
         </div>
