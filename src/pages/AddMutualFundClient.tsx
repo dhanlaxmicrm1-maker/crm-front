@@ -1,47 +1,60 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+type FormState = {
+  name: string;
+  mobile: string;
+  investment: string;
+};
+
 export default function AddMutualFundClient() {
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormState>({
     name: "",
     mobile: "",
     investment: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = () => {
-    if (!form.name || !form.mobile) {
+    if (!form.name.trim() || !form.mobile.trim()) {
       alert("Please fill required fields");
       return;
     }
 
-    const existing = JSON.parse(
-      localStorage.getItem("mfClients") || "[]"
-    );
+    try {
+      const existing = JSON.parse(localStorage.getItem("mfClients") || "[]");
 
-    const newClient = {
-      id: Date.now(),
-      ...form,
-    };
+      const newClient = {
+        id: Date.now(),
+        name: form.name.trim(),
+        mobile: form.mobile.trim(),
+        investment: form.investment.trim(),
+      };
 
-    localStorage.setItem(
-      "mfClients",
-      JSON.stringify([...existing, newClient])
-    );
+      localStorage.setItem(
+        "mfClients",
+        JSON.stringify([...existing, newClient])
+      );
 
-    navigate("/mutualfund-clients");
+      navigate("/mutualfund-clients");
+    } catch (error) {
+      console.error("Error saving client:", error);
+      alert("Something went wrong!");
+    }
   };
 
   return (
-    <div className="p-6 max-w-xl">
+    <div className="p-6 max-w-xl mx-auto">
       <h2 className="text-2xl font-semibold mb-4">
         Add Mutual Fund Client
       </h2>
@@ -73,7 +86,7 @@ export default function AddMutualFundClient() {
 
         <button
           onClick={handleSubmit}
-          className="bg-green-600 text-white px-4 py-2 rounded"
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
         >
           Save Client
         </button>
