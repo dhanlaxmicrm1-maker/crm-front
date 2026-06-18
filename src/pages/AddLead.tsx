@@ -1,6 +1,6 @@
 import { useState } from "react";
-import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 export default function AddLead() {
   const navigate = useNavigate();
@@ -22,7 +22,11 @@ export default function AddLead() {
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement |
+      HTMLSelectElement |
+      HTMLTextAreaElement
+    >
   ) => {
     setForm({
       ...form,
@@ -31,13 +35,21 @@ export default function AddLead() {
   };
 
   const submit = async () => {
+    if (!form.name || !form.mobile) {
+      alert("Name and Mobile are required");
+
+      return;
+    }
+
     try {
       await api.post("/leads", form);
 
       alert("Lead Added Successfully");
 
       navigate("/leads");
-    } catch (err) {
+    }
+
+    catch (err) {
       console.log(err);
 
       alert("Error Adding Lead");
@@ -47,15 +59,20 @@ export default function AddLead() {
   return (
     <div className="p-8 bg-slate-50 min-h-screen">
 
-      <div className="bg-white rounded-2xl shadow-sm p-8 max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto bg-white rounded-3xl shadow-sm p-8">
 
-        <h1 className="text-3xl font-bold mb-8">
+        <h1 className="text-3xl font-bold mb-2">
           Add Lead
         </h1>
+
+        <p className="text-slate-500 mb-8">
+          Create a new lead
+        </p>
 
         <div className="grid grid-cols-2 gap-6">
 
           <div>
+
             <label className="font-medium">
               Lead Name *
             </label>
@@ -66,11 +83,13 @@ export default function AddLead() {
               onChange={handleChange}
               className="w-full mt-2 border rounded-xl px-4 py-3"
             />
+
           </div>
 
           <div>
+
             <label className="font-medium">
-              Mobile Number
+              Mobile Number *
             </label>
 
             <input
@@ -79,9 +98,11 @@ export default function AddLead() {
               onChange={handleChange}
               className="w-full mt-2 border rounded-xl px-4 py-3"
             />
+
           </div>
 
           <div>
+
             <label className="font-medium">
               Email
             </label>
@@ -92,9 +113,11 @@ export default function AddLead() {
               onChange={handleChange}
               className="w-full mt-2 border rounded-xl px-4 py-3"
             />
+
           </div>
 
           <div>
+
             <label className="font-medium">
               Product Category
             </label>
@@ -105,9 +128,11 @@ export default function AddLead() {
               onChange={handleChange}
               className="w-full mt-2 border rounded-xl px-4 py-3"
             />
+
           </div>
 
           <div>
+
             <label className="font-medium">
               Product Type
             </label>
@@ -118,9 +143,11 @@ export default function AddLead() {
               onChange={handleChange}
               className="w-full mt-2 border rounded-xl px-4 py-3"
             />
+
           </div>
 
           <div>
+
             <label className="font-medium">
               Quotation Amount
             </label>
@@ -131,9 +158,11 @@ export default function AddLead() {
               onChange={handleChange}
               className="w-full mt-2 border rounded-xl px-4 py-3"
             />
+
           </div>
 
           <div>
+
             <label className="font-medium">
               Sum Assured
             </label>
@@ -144,9 +173,11 @@ export default function AddLead() {
               onChange={handleChange}
               className="w-full mt-2 border rounded-xl px-4 py-3"
             />
+
           </div>
 
           <div>
+
             <label className="font-medium">
               Premium Amount
             </label>
@@ -157,11 +188,13 @@ export default function AddLead() {
               onChange={handleChange}
               className="w-full mt-2 border rounded-xl px-4 py-3"
             />
+
           </div>
 
           <div>
+
             <label className="font-medium">
-              Follow-Up Date
+              Follow Up Date
             </label>
 
             <input
@@ -171,9 +204,11 @@ export default function AddLead() {
               onChange={handleChange}
               className="w-full mt-2 border rounded-xl px-4 py-3"
             />
+
           </div>
 
           <div>
+
             <label className="font-medium">
               Last Contacted
             </label>
@@ -185,11 +220,13 @@ export default function AddLead() {
               onChange={handleChange}
               className="w-full mt-2 border rounded-xl px-4 py-3"
             />
+
           </div>
 
           <div>
+
             <label className="font-medium">
-              Last Contact Method
+              Contact Method
             </label>
 
             <select
@@ -198,15 +235,33 @@ export default function AddLead() {
               onChange={handleChange}
               className="w-full mt-2 border rounded-xl px-4 py-3"
             >
-              <option value="">Select</option>
-              <option>Email</option>
-              <option>Call</option>
-              <option>WhatsApp</option>
-              <option>Meeting</option>
+
+              <option value="">
+                Select
+              </option>
+
+              <option>
+                Email
+              </option>
+
+              <option>
+                Call
+              </option>
+
+              <option>
+                WhatsApp
+              </option>
+
+              <option>
+                Meeting
+              </option>
+
             </select>
+
           </div>
 
           <div>
+
             <label className="font-medium">
               Status
             </label>
@@ -217,14 +272,37 @@ export default function AddLead() {
               onChange={handleChange}
               className="w-full mt-2 border rounded-xl px-4 py-3"
             >
-              <option value="">Select</option>
-              <option>New</option>
-              <option>Contacted</option>
-              <option>Interested</option>
-              <option>Proposal Sent</option>
-              <option>Follow-Up Pending</option>
-              <option>Converted</option>
+
+              <option value="">
+                Select
+              </option>
+
+              <option>
+                New
+              </option>
+
+              <option>
+                Contacted
+              </option>
+
+              <option>
+                Interested
+              </option>
+
+              <option>
+                Proposal Sent
+              </option>
+
+              <option>
+                Follow-Up Pending
+              </option>
+
+              <option>
+                Converted
+              </option>
+
             </select>
+
           </div>
 
         </div>
@@ -249,7 +327,9 @@ export default function AddLead() {
           onClick={submit}
           className="mt-8 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl"
         >
+
           Save Lead
+
         </button>
 
       </div>
