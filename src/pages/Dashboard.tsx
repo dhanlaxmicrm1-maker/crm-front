@@ -34,22 +34,22 @@ const COLORS = [
 
 export default function Dashboard() {
 
-  const [stats, setStats] = useState<any>({});
-
-  const [revenueData, setRevenueData] = useState<any[]>([]);
-
-  const [serviceData, setServiceData] = useState<any[]>([]);
-
-  const [followups, setFollowups] = useState<any[]>([]);
-
-  const [activities, setActivities] = useState<any[]>([]);
-
-  const [inquiries, setInquiries] = useState<any[]>([]);
+  const [stats, setStats] = useState<any>({
+    totalLeads: 0,
+    insuranceClients: 0,
+    vehiclePolicies: 0,
+    mutualFundClients: 0,
+    monthlyRevenue: 0,
+    monthlyCommission: 0,
+    upcomingRenewals: 0,
+    followUps: 0,
+    pendingTasks: 0,
+    revenueData: [],
+    serviceData: [],
+  });
 
   useEffect(() => {
-
     fetchDashboard();
-
   }, []);
 
   const fetchDashboard = async () => {
@@ -58,27 +58,7 @@ export default function Dashboard() {
 
       const res = await api.get("/dashboard");
 
-      setStats(res.data.stats);
-
-      setRevenueData(
-        res.data.revenueData
-      );
-
-      setServiceData(
-        res.data.serviceData
-      );
-
-      setFollowups(
-        res.data.followups
-      );
-
-      setActivities(
-        res.data.activities
-      );
-
-      setInquiries(
-        res.data.inquiries
-      );
+      setStats(res.data);
 
     }
 
@@ -104,67 +84,67 @@ export default function Dashboard() {
 
         <p className="text-sm text-slate-500">
 
-          Live business analytics
+          Live business analytics across all modules
 
         </p>
 
       </div>
 
-      {/* KPI */}
+      {/* KPI CARDS */}
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4 mb-5">
 
         <Card
           title="Total Leads"
-          value={stats.totalLeads || 0}
+          value={stats.totalLeads}
           icon={<Users size={18} />}
         />
 
         <Card
           title="Insurance Clients"
-          value={stats.insuranceClients || 0}
+          value={stats.insuranceClients}
           icon={<Shield size={18} />}
         />
 
         <Card
           title="Vehicle Insurance"
-          value={stats.vehicleInsurance || 0}
+          value={stats.vehiclePolicies}
           icon={<Car size={18} />}
         />
 
         <Card
           title="Mutual Fund Clients"
-          value={stats.mutualFundClients || 0}
+          value={stats.mutualFundClients}
           icon={<Landmark size={18} />}
         />
 
         <Card
           title="Monthly Revenue"
-          value={`₹${stats.monthlyRevenue || 0}`}
+          value={`₹${stats.monthlyRevenue.toLocaleString()}`}
           icon={<IndianRupee size={18} />}
         />
 
         <Card
           title="Monthly Commission"
-          value={`₹${stats.monthlyCommission || 0}`}
+          value={`₹${stats.monthlyCommission.toLocaleString()}`}
           icon={<IndianRupee size={18} />}
         />
 
         <Card
           title="Upcoming Renewals"
-          value={stats.upcomingRenewals || 0}
+          value={stats.upcomingRenewals}
           icon={<Calendar size={18} />}
         />
 
         <Card
           title="Today's Follow-Ups"
-          value={stats.followups || 0}
+          value={stats.followUps}
           icon={<Clock size={18} />}
         />
 
         <Card
           title="Pending Tasks"
-          value={stats.pendingTasks || 0}
+          value={stats.pendingTasks}
           icon={<ClipboardCheck size={18} />}
         />
 
@@ -178,7 +158,7 @@ export default function Dashboard() {
 
           <h2 className="font-semibold text-sm mb-3">
 
-            Revenue Trend
+            Revenue Trend (6 mo)
 
           </h2>
 
@@ -186,7 +166,7 @@ export default function Dashboard() {
 
             <ResponsiveContainer width="100%" height="100%">
 
-              <LineChart data={revenueData}>
+              <LineChart data={stats.revenueData}>
 
                 <CartesianGrid strokeDasharray="3 3" />
 
@@ -226,17 +206,18 @@ export default function Dashboard() {
               <PieChart>
 
                 <Pie
-                  data={serviceData}
+                  data={stats.serviceData}
                   dataKey="value"
                   nameKey="name"
                   cx="50%"
                   cy="38%"
                   innerRadius={45}
                   outerRadius={70}
+                  paddingAngle={1}
                 >
 
-                  {serviceData.map(
-                    (_, index) => (
+                  {stats.serviceData.map(
+                    (_: any, index: number) => (
 
                       <Cell
                         key={index}
@@ -260,105 +241,20 @@ export default function Dashboard() {
 
       </div>
 
-      {/* Followups */}
-
-      <div className="grid xl:grid-cols-4 gap-4 mb-5">
-
-        <div className="xl:col-span-3 bg-white rounded-xl shadow-sm">
-
-          <div className="p-3 border-b">
-
-            <h2 className="font-semibold text-sm">
-
-              Upcoming Follow-ups
-
-            </h2>
-
-          </div>
-
-          <div className="divide-y">
-
-            {followups.map((item:any) => (
-
-              <Item
-                key={item._id}
-                title={item.title}
-                sub={item.sub}
-                badge={item.badge}
-              />
-
-            ))}
-
-          </div>
-
-        </div>
-
-        <div className="bg-white rounded-xl shadow-sm">
-
-          <div className="p-3 border-b">
-
-            <h2 className="font-semibold text-sm">
-
-              Recent Activity
-
-            </h2>
-
-          </div>
-
-          <div className="divide-y">
-
-            {activities.map((item:any) => (
-
-              <Activity
-                key={item._id}
-                text={item.text}
-                time={item.time}
-              />
-
-            ))}
-
-          </div>
-
-        </div>
-
-      </div>
-
-      {/* Website Inquiries */}
-
-      <div className="bg-white rounded-xl shadow-sm">
-
-        <div className="p-3 border-b">
-
-          <h2 className="font-semibold text-sm">
-
-            New Website Inquiries
-
-          </h2>
-
-        </div>
-
-        <div className="divide-y">
-
-          {inquiries.map((item:any) => (
-
-            <Inquiry
-              key={item._id}
-              name={item.name}
-              phone={item.phone}
-            />
-
-          ))}
-
-        </div>
-
-      </div>
-
     </div>
 
   );
 }
 
-function Card({ title, value, icon }: any) {
+function Card({
+  title,
+  value,
+  icon,
+}: {
+  title: string;
+  value: any;
+  icon: React.ReactNode;
+}) {
 
   return (
 
@@ -376,7 +272,7 @@ function Card({ title, value, icon }: any) {
 
       </div>
 
-      <h3 className="text-2xl font-bold">
+      <h3 className="text-2xl font-bold text-slate-800">
 
         {value}
 
@@ -385,97 +281,4 @@ function Card({ title, value, icon }: any) {
     </div>
 
   );
-
-}
-
-function Item({ title, sub, badge }: any) {
-
-  return (
-
-    <div className="p-3 flex justify-between">
-
-      <div>
-
-        <p className="text-sm font-medium">
-
-          {title}
-
-        </p>
-
-        <p className="text-xs text-slate-500">
-
-          {sub}
-
-        </p>
-
-      </div>
-
-      <span className="text-xs bg-slate-100 px-3 py-1 rounded-full">
-
-        {badge}
-
-      </span>
-
-    </div>
-
-  );
-
-}
-
-function Activity({ text, time }: any) {
-
-  return (
-
-    <div className="p-3">
-
-      <p className="text-sm">
-
-        {text}
-
-      </p>
-
-      <p className="text-xs text-slate-500">
-
-        {time}
-
-      </p>
-
-    </div>
-
-  );
-
-}
-
-function Inquiry({ name, phone }: any) {
-
-  return (
-
-    <div className="p-3 flex justify-between">
-
-      <div>
-
-        <p className="text-sm font-medium">
-
-          {name}
-
-        </p>
-
-        <p className="text-xs text-slate-500">
-
-          {phone}
-
-        </p>
-
-      </div>
-
-      <button className="text-xs text-blue-600">
-
-        Open
-
-      </button>
-
-    </div>
-
-  );
-
 }
