@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import api from "../services/api";
+
 import {
   ResponsiveContainer,
   LineChart,
@@ -11,6 +14,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
+
 import {
   Users,
   Shield,
@@ -21,6 +25,7 @@ import {
   Calendar,
   Clock,
 } from "lucide-react";
+
 const revenueData = [
   { month: "Jan", revenue: 1200000 },
   { month: "Feb", revenue: 1450000 },
@@ -52,10 +57,59 @@ const COLORS = [
 ];
 
 export default function Dashboard() {
+
+  const [stats, setStats] = useState({
+    leads: 0,
+    insurance: 0,
+    vehicle: 0,
+    mutual: 0,
+    tasks: 0,
+  });
+
+  useEffect(() => {
+    fetchDashboard();
+  }, []);
+
+  const fetchDashboard = async () => {
+
+    try {
+
+      const [
+        leadsRes,
+        insuranceRes,
+        vehicleRes,
+        mutualRes,
+        taskRes,
+      ] = await Promise.all([
+        api.get("/leads"),
+        api.get("/insurance"),
+        api.get("/vehicle"),
+        api.get("/mutualfund"),
+        api.get("/tasks"),
+      ]);
+
+      setStats({
+        leads: leadsRes.data.length,
+        insurance: insuranceRes.data.length,
+        vehicle: vehicleRes.data.length,
+        mutual: mutualRes.data.length,
+        tasks: taskRes.data.length,
+      });
+
+    }
+
+    catch (err) {
+
+      console.log(err);
+
+    }
+  };
+
   return (
     <div className="p-4 bg-slate-50 min-h-screen">
 
       <div className="mb-4">
+
         <h1 className="text-2xl font-bold text-slate-800">
           Executive Dashboard
         </h1>
@@ -63,26 +117,66 @@ export default function Dashboard() {
         <p className="text-sm text-slate-500">
           Live business analytics across all modules
         </p>
-      </div>
 
-      {/* KPI CARDS */}
+      </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4 mb-5">
 
-        <Card title="Total Leads" value="22" icon={<Users size={18} />} />
-        <Card title="Insurance Clients" value="22" icon={<Shield size={18} />} />
-        <Card title="Vehicle Insurance" value="22" icon={<Car size={18} />} />
-        <Card title="Mutual Fund Clients" value="22" icon={<Landmark size={18} />} />
-        <Card title="Monthly Revenue" value="₹28,04,450" icon={<IndianRupee size={18} />} />
+        <Card
+          title="Total Leads"
+          value={String(stats.leads)}
+          icon={<Users size={18} />}
+        />
 
-        <Card title="Monthly Commission" value="₹3,99,410" icon={<IndianRupee size={18} />} />
-        <Card title="Upcoming Renewals" value="7" icon={<Calendar size={18} />} />
-        <Card title="Today's Follow-Ups" value="1" icon={<Clock size={18} />} />
-        <Card title="Pending Tasks" value="8" icon={<ClipboardCheck size={18} />} />
+        <Card
+          title="Insurance Clients"
+          value={String(stats.insurance)}
+          icon={<Shield size={18} />}
+        />
+
+        <Card
+          title="Vehicle Insurance"
+          value={String(stats.vehicle)}
+          icon={<Car size={18} />}
+        />
+
+        <Card
+          title="Mutual Fund Clients"
+          value={String(stats.mutual)}
+          icon={<Landmark size={18} />}
+        />
+
+        <Card
+          title="Monthly Revenue"
+          value="₹28,04,450"
+          icon={<IndianRupee size={18} />}
+        />
+
+        <Card
+          title="Monthly Commission"
+          value="₹3,99,410"
+          icon={<IndianRupee size={18} />}
+        />
+
+        <Card
+          title="Upcoming Renewals"
+          value="7"
+          icon={<Calendar size={18} />}
+        />
+
+        <Card
+          title="Today's Follow-Ups"
+          value="1"
+          icon={<Clock size={18} />}
+        />
+
+        <Card
+          title="Pending Tasks"
+          value={String(stats.tasks)}
+          icon={<ClipboardCheck size={18} />}
+        />
 
       </div>
-
-      {/* CHARTS */}
 
       <div className="grid xl:grid-cols-4 gap-4 mb-5">
 
@@ -93,25 +187,32 @@ export default function Dashboard() {
           </h2>
 
           <div className="h-[280px]">
-  <ResponsiveContainer width="100%" height="100%">
-    <LineChart data={revenueData}>
-      <CartesianGrid strokeDasharray="3 3" />
 
-      <XAxis dataKey="month" />
+            <ResponsiveContainer width="100%" height="100%">
 
-      <YAxis />
+              <LineChart data={revenueData}>
 
-      <Tooltip />
+                <CartesianGrid strokeDasharray="3 3" />
 
-      <Line
-        type="monotone"
-        dataKey="revenue"
-        stroke="#2563eb"
-        strokeWidth={3}
-      />
-    </LineChart>
-  </ResponsiveContainer>
-</div>
+                <XAxis dataKey="month" />
+
+                <YAxis />
+
+                <Tooltip />
+
+                <Line
+                  type="monotone"
+                  dataKey="revenue"
+                  stroke="#2563eb"
+                  strokeWidth={3}
+                />
+
+              </LineChart>
+
+            </ResponsiveContainer>
+
+          </div>
+
         </div>
 
         <div className="bg-white rounded-xl shadow-sm p-4">
@@ -120,135 +221,57 @@ export default function Dashboard() {
             Service Distribution
           </h2>
 
-         <div className="h-[280px]">
-<ResponsiveContainer width="100%" height={220}>
-  <PieChart>
-    <Pie
-      data={serviceData}
-      dataKey="value"
-      nameKey="name"
-      cx="50%"
-      cy="38%"
-      innerRadius={45}
-      outerRadius={70}
-      paddingAngle={1}
-    >
-      {serviceData.map((_, index) => (
-        <Cell
-          key={index}
-          fill={COLORS[index]}
-        />
-      ))}
-    </Pie>
+          <div className="h-[280px]">
 
-    <Tooltip />
-  </PieChart>
-</ResponsiveContainer>
+            <ResponsiveContainer width="100%" height={220}>
 
-  <div className="flex justify-center gap-4 mt-2 text-sm">
-    <span className="text-blue-600">
-      ● Insurance
-    </span>
+              <PieChart>
 
-    <span className="text-teal-600">
-      ● Vehicle
-    </span>
+                <Pie
+                  data={serviceData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="38%"
+                  innerRadius={45}
+                  outerRadius={70}
+                  paddingAngle={1}
+                >
 
-    <span className="text-amber-500">
-      ● Mutual Funds
-    </span>
-  </div>
-</div>
-        </div>
+                  {serviceData.map((_, index) => (
 
-      </div>
+                    <Cell
+                      key={index}
+                      fill={COLORS[index]}
+                    />
 
-      {/* FOLLOWUPS + ACTIVITY */}
+                  ))}
 
-      <div className="grid xl:grid-cols-4 gap-4 mb-5">
+                </Pie>
 
-        <div className="xl:col-span-3 bg-white rounded-xl shadow-sm">
+                <Tooltip />
 
-          <div className="p-3 border-b flex justify-between">
-            <h2 className="font-semibold text-sm">
-              Upcoming Follow-ups
-            </h2>
+              </PieChart>
 
-            <button className="text-xs text-blue-600">
-              View all
-            </button>
-          </div>
+            </ResponsiveContainer>
 
-          <div className="divide-y">
+            <div className="flex justify-center gap-4 mt-2 text-sm">
 
-            <Item
-              title="Collect KYC documents"
-              sub="Rahul Sharma • Due 2026-05-12"
-              badge="In Progress"
-            />
+              <span className="text-blue-600">
+                ● Insurance
+              </span>
 
-            <Item
-              title="Process SIP registration ₹10,000"
-              sub="Priya Iyer • Due 2026-05-11"
-              badge="In Progress"
-            />
+              <span className="text-teal-600">
+                ● Vehicle
+              </span>
 
-            <Item
-              title="Call new lead"
-              sub="Karan Mehta • Due 2026-05-10"
-              badge="Pending"
-            />
+              <span className="text-amber-500">
+                ● Mutual Funds
+              </span>
 
-            <Item
-              title="E-mandate follow up"
-              sub="Sneha Kapoor • Due 2026-05-13"
-              badge="Follow-up Required"
-            />
+            </div>
 
           </div>
-
-        </div>
-
-        <div className="bg-white rounded-xl shadow-sm">
-
-          <div className="p-3 border-b">
-            <h2 className="font-semibold text-sm">
-              Recent Activity
-            </h2>
-          </div>
-
-          <div className="divide-y">
-
-            <Activity text="New lead from website" time="10 min ago" />
-            <Activity text="Task completed" time="1 hr ago" />
-            <Activity text="KYC uploaded" time="2 hr ago" />
-            <Activity text="Account opened" time="Yesterday" />
-
-          </div>
-
-        </div>
-
-      </div>
-
-      {/* WEBSITE INQUIRIES */}
-
-      <div className="bg-white rounded-xl shadow-sm">
-
-        <div className="p-3 flex justify-between">
-          <h2 className="font-semibold text-sm">
-            New Website Inquiries
-          </h2>
-
-          <button className="text-xs text-blue-600">
-            All leads
-          </button>
-        </div>
-
-        <div className="divide-y">
-
-          <Inquiry name="Karan Mehta" phone="+91 90123 45678" />
-          <Inquiry name="Arjun Desai" phone="+91 91234 87654" />
-          <Inquiry name="Rohit Khanna" phone="+91 90090 12121" />
 
         </div>
 
@@ -267,77 +290,28 @@ function Card({
   value: string;
   icon: React.ReactNode;
 }) {
+
   return (
+
     <div className="bg-white rounded-xl p-4 shadow-sm">
+
       <div className="flex justify-between mb-3">
-        <span className="text-xs text-slate-500">{title}</span>
+
+        <span className="text-xs text-slate-500">
+          {title}
+        </span>
+
         {icon}
+
       </div>
 
       <h3 className="text-2xl font-bold text-slate-800">
+
         {value}
+
       </h3>
+
     </div>
-  );
-}
 
-function Item({
-  title,
-  sub,
-  badge,
-}: {
-  title: string;
-  sub: string;
-  badge: string;
-}) {
-  return (
-    <div className="p-3 flex justify-between items-center">
-      <div>
-        <p className="text-sm font-medium">{title}</p>
-        <p className="text-xs text-slate-500">{sub}</p>
-      </div>
-
-      <span className="text-xs bg-slate-100 px-3 py-1 rounded-full">
-        {badge}
-      </span>
-    </div>
-  );
-}
-
-function Activity({
-  text,
-  time,
-}: {
-  text: string;
-  time: string;
-}) {
-  return (
-    <div className="p-3">
-      <p className="text-sm">{text}</p>
-      <p className="text-xs text-slate-500">{time}</p>
-    </div>
-  );
-}
-
-function Inquiry({
-  name,
-  phone,
-}: {
-  name: string;
-  phone: string;
-}) {
-  return (
-    <div className="p-3 flex justify-between items-center">
-      <div>
-        <p className="text-sm font-medium">{name}</p>
-        <p className="text-xs text-slate-500">
-          {phone} • Website
-        </p>
-      </div>
-
-      <button className="text-xs text-blue-600">
-        Open
-      </button>
-    </div>
   );
 }
