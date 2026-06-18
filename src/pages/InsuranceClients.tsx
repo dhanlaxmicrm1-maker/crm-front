@@ -1,112 +1,100 @@
 import { useState } from "react";
-import { Search } from "lucide-react";
+
+type InsuranceClient = {
+  id: number;
+  client: string;
+  policyNo: string;
+  product: string;
+  premium: number;
+  commission: number;
+  renewal: string;
+};
 
 export default function InsuranceClients() {
-
-  const [clients, setClients] = useState([]);
-
-  const [form, setForm] = useState({
+  const [clients, setClients] = useState<InsuranceClient[]>([]);
+  const [form, setForm] = useState<Omit<InsuranceClient, "id">>({
     client: "",
     policyNo: "",
     product: "",
-    premium: "",
-    commission: "",
-    renewal: ""
+    premium: 0,
+    commission: 0,
+    renewal: "",
   });
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setForm({
+      ...form,
+      [name]:
+        name === "premium" || name === "commission"
+          ? Number(value)
+          : value,
+    });
   };
 
   const addClient = () => {
     if (!form.client) return;
 
-    setClients([
-      ...clients,
-      {
-        id: Date.now(),
-        ...form,
-        premium: Number(form.premium),
-        commission: Number(form.commission)
-      }
-    ]);
+    const newClient: InsuranceClient = {
+      id: Date.now(),
+      ...form,
+    };
+
+    setClients([...clients, newClient]);
 
     setForm({
       client: "",
       policyNo: "",
       product: "",
-      premium: "",
-      commission: "",
-      renewal: ""
+      premium: 0,
+      commission: 0,
+      renewal: "",
     });
   };
 
   return (
-    <div className="p-6 bg-slate-50 min-h-screen">
+    <div className="p-4">
+      <h2>Insurance Clients</h2>
 
-      <h1 className="text-4xl font-bold mb-6">
-        Insurance Clients
-      </h1>
-
-      {/* 🔥 FORM */}
-      <div className="bg-white p-5 rounded-2xl mb-6 shadow-sm grid grid-cols-3 gap-4">
-
-        <input name="client" value={form.client} onChange={handleChange} placeholder="Client Name" className="input" />
-        <input name="policyNo" value={form.policyNo} onChange={handleChange} placeholder="Policy No" className="input" />
-        <input name="product" value={form.product} onChange={handleChange} placeholder="Product" className="input" />
-
-        <input name="premium" value={form.premium} onChange={handleChange} placeholder="Premium" className="input" />
-        <input name="commission" value={form.commission} onChange={handleChange} placeholder="Commission" className="input" />
-        <input name="renewal" value={form.renewal} onChange={handleChange} placeholder="Renewal Date" className="input" />
-
-        <button
-          onClick={addClient}
-          className="col-span-3 bg-blue-600 text-white py-2 rounded-xl"
-        >
-          Add Client
-        </button>
-
+      <div className="grid grid-cols-3 gap-2 mb-4">
+        <input name="client" value={form.client} onChange={handleChange} placeholder="Client" />
+        <input name="policyNo" value={form.policyNo} onChange={handleChange} placeholder="Policy No" />
+        <input name="product" value={form.product} onChange={handleChange} placeholder="Product" />
+        <input name="premium" value={form.premium} onChange={handleChange} placeholder="Premium" />
+        <input name="commission" value={form.commission} onChange={handleChange} placeholder="Commission" />
+        <input name="renewal" value={form.renewal} onChange={handleChange} placeholder="Renewal Date" />
       </div>
 
-      {/* 🔍 SEARCH */}
-      <div className="relative w-[420px] mb-5">
-        <Search className="absolute left-3 top-3 text-slate-400" size={18} />
-        <input placeholder="Search..." className="w-full bg-slate-50 rounded-xl pl-10 py-3 outline-none" />
-      </div>
+      <button onClick={addClient} className="bg-blue-600 text-white px-4 py-2">
+        Add Client
+      </button>
 
-      {/* 📊 TABLE */}
-      <div className="bg-white rounded-3xl shadow-sm p-5 overflow-x-auto">
+      <table className="w-full mt-4 border">
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Policy</th>
+            <th>Product</th>
+            <th>Premium</th>
+            <th>Commission</th>
+            <th>Renewal</th>
+          </tr>
+        </thead>
 
-        <table className="w-full">
-
-          <thead className="bg-slate-50">
-            <tr>
-              <th className="p-4 text-left">Client</th>
-              <th className="p-4 text-left">Policy #</th>
-              <th className="p-4 text-left">Product</th>
-              <th className="p-4 text-left">Premium</th>
-              <th className="p-4 text-left">Commission</th>
-              <th className="p-4 text-left">Renewal</th>
+        <tbody>
+          {clients.map((c) => (
+            <tr key={c.id}>
+              <td>{c.client}</td>
+              <td>{c.policyNo}</td>
+              <td>{c.product}</td>
+              <td>{c.premium}</td>
+              <td>{c.commission}</td>
+              <td>{c.renewal}</td>
             </tr>
-          </thead>
-
-          <tbody>
-            {clients.map((c) => (
-              <tr key={c.id} className="hover:bg-slate-50">
-                <td className="p-4">{c.client}</td>
-                <td className="p-4">{c.policyNo}</td>
-                <td className="p-4">{c.product}</td>
-                <td className="p-4">₹{c.premium}</td>
-                <td className="p-4 text-green-600">₹{c.commission}</td>
-                <td className="p-4">{c.renewal}</td>
-              </tr>
-            ))}
-          </tbody>
-
-        </table>
-
-      </div>
-
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
