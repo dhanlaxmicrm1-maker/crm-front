@@ -1,6 +1,8 @@
 import { useState } from "react";
+
 import { mutualFundClients } from "../data/mutualFundClients";
-import { Search, Download, Plus } from "lucide-react";
+
+import { Search, Download, Plus, X } from "lucide-react";
 
 export default function MutualFundClients() {
 
@@ -9,37 +11,81 @@ export default function MutualFundClients() {
   const [showModal, setShowModal] = useState(false);
 
   const [newInvestor, setNewInvestor] = useState({
+
     customerName: "",
+
     mobile: "",
-    folioNo: "",
-    amc: "",
-    investment: "",
-    sipAmount: "",
+
+    email: "",
+
+    pan: "",
+
+    investmentType: "SIP",
+
+    investmentTenure: "",
+
+    riskProfile: "Moderate",
+
+    investmentAmount: "",
+
+    notes: "",
   });
 
   const addInvestor = () => {
+
     setInvestors([
       ...investors,
+
       {
         id: investors.length + 1,
+
         customerName: newInvestor.customerName,
+
         mobile: newInvestor.mobile,
-        folioNo: newInvestor.folioNo,
-        amc: newInvestor.amc,
-        investment: Number(newInvestor.investment),
-        sipAmount: Number(newInvestor.sipAmount),
+
+        email: newInvestor.email,
+
+        pan: newInvestor.pan,
+
+        investmentType: newInvestor.investmentType,
+
+        investmentTenure: newInvestor.investmentTenure,
+
+        riskProfile: newInvestor.riskProfile,
+
+        investment:
+          Number(newInvestor.investmentAmount),
+
+        sipAmount:
+          newInvestor.investmentType === "SIP"
+
+            ? Number(newInvestor.investmentAmount)
+
+            : 0,
       },
     ]);
 
     setShowModal(false);
 
     setNewInvestor({
+
       customerName: "",
+
       mobile: "",
-      folioNo: "",
-      amc: "",
-      investment: "",
-      sipAmount: "",
+
+      email: "",
+
+      pan: "",
+
+      investmentType: "SIP",
+
+      investmentTenure: "",
+
+      riskProfile: "Moderate",
+
+      investmentAmount: "",
+
+      notes: "",
     });
   };
 
@@ -48,64 +94,95 @@ export default function MutualFundClients() {
     0
   );
 
-const totalSIP = investors.reduce(
-  (sum, client) => sum + client.sipAmount,
-  0
-);
+  const totalSIP = investors.reduce(
+    (sum, client) => sum + client.sipAmount,
+    0
+  );
 
   return (
+
     <div className="p-6 bg-slate-50 min-h-screen">
 
       <div className="mb-6">
-        <h1 className="text-4xl font-bold text-slate-900">
+
+        <h1 className="text-4xl font-bold">
+
           Mutual Fund Clients
+
         </h1>
 
-        <p className="text-slate-500 mt-2">
-          Track investments, SIPs and folios
+        <p className="text-slate-500">
+
+          SIP, Lumpsum & SWP management
+
         </p>
+
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid md:grid-cols-4 gap-4 mb-6">
 
-        <div className="bg-white rounded-2xl shadow-sm p-5">
-          <p className="text-sm text-slate-500">
+        <div className="bg-white rounded-2xl p-5 shadow-sm">
+
+          <p className="text-slate-500 text-sm">
+
             Total Investors
+
           </p>
 
-          <h2 className="text-3xl font-bold mt-2">
+          <h2 className="text-3xl font-bold">
+
             {investors.length}
+
           </h2>
+
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm p-5">
-          <p className="text-sm text-slate-500">
+        <div className="bg-white rounded-2xl p-5 shadow-sm">
+
+          <p className="text-slate-500 text-sm">
+
             Total AUM
+
           </p>
 
-          <h2 className="text-3xl font-bold mt-2">
+          <h2 className="text-3xl font-bold">
+
             ₹{totalAUM.toLocaleString()}
+
           </h2>
+
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm p-5">
-          <p className="text-sm text-slate-500">
+        <div className="bg-white rounded-2xl p-5 shadow-sm">
+
+          <p className="text-slate-500 text-sm">
+
             Monthly SIP
+
           </p>
 
-          <h2 className="text-3xl font-bold mt-2">
+          <h2 className="text-3xl font-bold">
+
             ₹{totalSIP.toLocaleString()}
+
           </h2>
+
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm p-5">
-          <p className="text-sm text-slate-500">
+        <div className="bg-white rounded-2xl p-5 shadow-sm">
+
+          <p className="text-slate-500 text-sm">
+
             Active Folios
+
           </p>
 
-          <h2 className="text-3xl font-bold mt-2">
+          <h2 className="text-3xl font-bold">
+
             {investors.length}
+
           </h2>
+
         </div>
 
       </div>
@@ -122,202 +199,417 @@ const totalSIP = investors.reduce(
             />
 
             <input
-              type="text"
-              placeholder="Search investor..."
-              className="w-full bg-slate-50 rounded-xl pl-10 py-2.5 outline-none"
+              placeholder="Search..."
+              className="w-full bg-slate-50 rounded-xl pl-10 py-3 outline-none"
             />
 
           </div>
 
           <div className="flex gap-3">
 
-            <button className="bg-slate-100 hover:bg-slate-200 rounded-xl px-4 py-2 flex items-center gap-2 transition">
+            <button className="bg-slate-100 px-4 py-2 rounded-xl flex items-center gap-2">
+
               <Download size={16} />
+
               Export
+
             </button>
 
             <button
-  onClick={() => setShowModal(true)}
-  className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-4 py-2 flex items-center gap-2 transition"
->
-  <Plus size={16} />
-  Add Investor
-</button>
+
+              onClick={() =>
+                setShowModal(true)
+              }
+
+              className="bg-blue-600 text-white px-4 py-2 rounded-xl flex items-center gap-2"
+
+            >
+
+              <Plus size={16} />
+
+              Add Client
+
+            </button>
+
           </div>
 
         </div>
 
-        <div className="overflow-x-auto">
+        <table className="w-full">
 
-          <table className="w-full">
+          <thead className="bg-slate-50">
 
-            <thead className="bg-slate-50">
+            <tr>
 
-              <tr className="text-left text-slate-600">
+              <th className="p-4 text-left">
 
-                <th className="p-4">Investor</th>
-                <th className="p-4">Mobile</th>
-                <th className="p-4">Folio</th>
-                <th className="p-4">AMC</th>
-                <th className="p-4">Investment</th>
-                <th className="p-4">SIP</th>
+                Name
+
+              </th>
+
+              <th className="p-4 text-left">
+
+                Mobile
+
+              </th>
+
+              <th className="p-4 text-left">
+
+                Type
+
+              </th>
+
+              <th className="p-4 text-left">
+
+                Risk
+
+              </th>
+
+              <th className="p-4 text-left">
+
+                Amount
+
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            {investors.map((client) => (
+
+              <tr
+
+                key={client.id}
+
+                className="border-b"
+
+              >
+
+                <td className="p-4">
+
+                  {client.customerName}
+
+                </td>
+
+                <td className="p-4">
+
+                  {client.mobile}
+
+                </td>
+
+                <td className="p-4">
+
+                  {client.investmentType}
+
+                </td>
+
+                <td className="p-4">
+
+                  {client.riskProfile}
+
+                </td>
+
+                <td className="p-4">
+
+                  ₹{client.investment.toLocaleString()}
+
+                </td>
 
               </tr>
 
-            </thead>
+            ))}
 
-            <tbody>
+          </tbody>
 
-              {investors.map((client) => (
+        </table>
 
-                <tr
-                  key={client.id}
-                  className="hover:bg-slate-50 transition"
-                >
+      </div>
 
-                  <td className="p-4 font-medium">
-                    {client.customerName}
-                  </td>
+      {showModal && (
 
-                  <td className="p-4">
-                    {client.mobile}
-                  </td>
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
 
-                  <td className="p-4">
-                    {client.folioNo}
-                  </td>
+          <div className="bg-white rounded-2xl w-[720px] p-6">
 
-                  <td className="p-4">
-                    {client.amc}
-                  </td>
+            <div className="flex justify-between mb-5">
 
-                  <td className="p-4">
-                    ₹{client.investment.toLocaleString()}
-                  </td>
+              <h2 className="text-2xl font-bold">
 
-                  <td className="p-4">
-                    ₹{client.sipAmount.toLocaleString()}
-                  </td>
+                Add Mutual Fund Client
 
-                </tr>
+              </h2>
 
-              ))}
+              <button
 
-            </tbody>
+                onClick={() =>
+                  setShowModal(false)
+                }
 
-          </table>
+              >
+
+                <X size={20} />
+
+              </button>
+
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+
+              <input
+                placeholder="Client Name"
+                className="border p-3 rounded-xl"
+
+                value={newInvestor.customerName}
+
+                onChange={(e)=>
+
+                  setNewInvestor({
+
+                    ...newInvestor,
+
+                    customerName:
+                      e.target.value,
+                  })
+
+                }
+              />
+
+              <input
+                placeholder="Mobile"
+
+                className="border p-3 rounded-xl"
+
+                value={newInvestor.mobile}
+
+                onChange={(e)=>
+
+                  setNewInvestor({
+
+                    ...newInvestor,
+
+                    mobile:
+                      e.target.value,
+                  })
+
+                }
+              />
+
+              <input
+                placeholder="Email"
+
+                className="border p-3 rounded-xl"
+
+                value={newInvestor.email}
+
+                onChange={(e)=>
+
+                  setNewInvestor({
+
+                    ...newInvestor,
+
+                    email:
+                      e.target.value,
+                  })
+
+                }
+              />
+
+              <input
+                placeholder="PAN"
+
+                className="border p-3 rounded-xl"
+
+                value={newInvestor.pan}
+
+                onChange={(e)=>
+
+                  setNewInvestor({
+
+                    ...newInvestor,
+
+                    pan:
+                      e.target.value,
+                  })
+
+                }
+              />
+
+              <select
+
+                className="border p-3 rounded-xl"
+
+                value={newInvestor.investmentType}
+
+                onChange={(e)=>
+
+                  setNewInvestor({
+
+                    ...newInvestor,
+
+                    investmentType:
+                      e.target.value,
+                  })
+
+                }
+
+              >
+
+                <option>SIP</option>
+
+                <option>Lumpsum</option>
+
+                <option>SWP</option>
+
+              </select>
+
+              <input
+
+                placeholder="Investment Tenure"
+
+                className="border p-3 rounded-xl"
+
+                value={newInvestor.investmentTenure}
+
+                onChange={(e)=>
+
+                  setNewInvestor({
+
+                    ...newInvestor,
+
+                    investmentTenure:
+                      e.target.value,
+                  })
+
+                }
+
+              />
+
+              <select
+
+                className="border p-3 rounded-xl"
+
+                value={newInvestor.riskProfile}
+
+                onChange={(e)=>
+
+                  setNewInvestor({
+
+                    ...newInvestor,
+
+                    riskProfile:
+                      e.target.value,
+                  })
+
+                }
+
+              >
+
+                <option>
+
+                  Conservative
+
+                </option>
+
+                <option>
+
+                  Moderate
+
+                </option>
+
+                <option>
+
+                  Aggressive
+
+                </option>
+
+              </select>
+
+              <input
+
+                placeholder="Investment Amount"
+
+                className="border p-3 rounded-xl"
+
+                value={newInvestor.investmentAmount}
+
+                onChange={(e)=>
+
+                  setNewInvestor({
+
+                    ...newInvestor,
+
+                    investmentAmount:
+                      e.target.value,
+                  })
+
+                }
+
+              />
+
+            </div>
+
+            <textarea
+
+              rows={4}
+
+              placeholder="Notes"
+
+              className="w-full border rounded-xl p-3 mt-4"
+
+              value={newInvestor.notes}
+
+              onChange={(e)=>
+
+                setNewInvestor({
+
+                  ...newInvestor,
+
+                  notes:
+                    e.target.value,
+                })
+
+              }
+
+            />
+
+            <div className="flex justify-end gap-3 mt-6">
+
+              <button
+
+                onClick={() =>
+                  setShowModal(false)
+                }
+
+                className="border px-5 py-2 rounded-xl"
+
+              >
+
+                Cancel
+
+              </button>
+
+              <button
+
+                onClick={addInvestor}
+
+                className="bg-blue-600 text-white px-5 py-2 rounded-xl"
+
+              >
+
+                Save
+
+              </button>
+
+            </div>
+
+          </div>
 
         </div>
 
-      </div>
-{showModal && (
-  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+      )}
 
-    <div className="bg-white p-6 rounded-2xl w-[650px]">
-
-      <h2 className="text-xl font-bold mb-4">
-        Add Investor
-      </h2>
-
-      <div className="grid grid-cols-2 gap-3">
-
-        <input
-          placeholder="Investor Name"
-          value={newInvestor.customerName}
-          onChange={(e) =>
-            setNewInvestor({
-              ...newInvestor,
-              customerName: e.target.value,
-            })
-          }
-          className="border p-3 rounded-xl"
-        />
-
-        <input
-          placeholder="Mobile"
-          value={newInvestor.mobile}
-          onChange={(e) =>
-            setNewInvestor({
-              ...newInvestor,
-              mobile: e.target.value,
-            })
-          }
-          className="border p-3 rounded-xl"
-        />
-
-        <input
-          placeholder="Folio No"
-          value={newInvestor.folioNo}
-          onChange={(e) =>
-            setNewInvestor({
-              ...newInvestor,
-              folioNo: e.target.value,
-            })
-          }
-          className="border p-3 rounded-xl"
-        />
-
-        <input
-          placeholder="AMC"
-          value={newInvestor.amc}
-          onChange={(e) =>
-            setNewInvestor({
-              ...newInvestor,
-              amc: e.target.value,
-            })
-          }
-          className="border p-3 rounded-xl"
-        />
-
-        <input
-          placeholder="Investment"
-          value={newInvestor.investment}
-          onChange={(e) =>
-            setNewInvestor({
-              ...newInvestor,
-              investment: e.target.value,
-            })
-          }
-          className="border p-3 rounded-xl"
-        />
-
-        <input
-          placeholder="Monthly SIP"
-          value={newInvestor.sipAmount}
-          onChange={(e) =>
-            setNewInvestor({
-              ...newInvestor,
-              sipAmount: e.target.value,
-            })
-          }
-          className="border p-3 rounded-xl"
-        />
-
-      </div>
-
-      <div className="flex gap-3 mt-5">
-
-        <button
-          onClick={addInvestor}
-          className="bg-blue-600 text-white px-5 py-2 rounded-xl"
-        >
-          Save
-        </button>
-
-        <button
-          onClick={() => setShowModal(false)}
-          className="border px-5 py-2 rounded-xl"
-        >
-          Cancel
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-)}
     </div>
   );
 }
-      
